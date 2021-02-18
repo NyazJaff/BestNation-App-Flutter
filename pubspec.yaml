@@ -1,0 +1,47 @@
+name: bestnation
+description: Best Nation
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.0
+
+  firebase_core:        "^0.5.3"
+  cloud_firestore:      "0.14.4"
+  easy_localization:    "^2.3.2"   # Localise app lang
+  flutter_staggered_animations: "^0.1.2" # Display grid with animation
+  percent_indicator: "^2.1.7+2"
+  font_awesome_flutter: ^8.5.0
+  dio: "^3.0.10"
+  path_provider:
+  flutter_pdfview:      "^1.0.4"
+  just_audio:           "^0.6.4"
+  share:                "^0.6.5+4" # Share files with others
+  flutter_inappwebview: "^4.0.0+4" # Open webpage for live stream
+  url_launcher:         "^5.4.11"
+  sqflite:
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/brand/
+    - assets/langs/
+
+  fonts:
+    - family: Tajawal
+      fonts:
+        - asset: assets/fonts/tajawal/Tajawal-Black.ttf
+        - asset: assets/fonts/tajawal/Tajawal-Bold.ttf
+        - asset: assets/fonts/tajawal/Tajawal-Medium.ttf
+        - asset: assets/fonts/tajawal/Tajawal-Regular.ttf
+
