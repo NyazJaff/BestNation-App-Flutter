@@ -11,24 +11,38 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.0
 
-  firebase_core:        "^0.5.3"
-  cloud_firestore:      "0.14.4"
-  easy_localization:    "^2.3.2"   # Localise app lang
+  firebase_core:                "^0.7.0"
+  cloud_firestore:              "^0.16.0"
+  firebase_analytics:           "^7.0.1"
+
+  easy_localization:            "^2.3.3"   # Localise app lang
   flutter_staggered_animations: "^0.1.2" # Display grid with animation
-  percent_indicator: "^2.1.7+2"
-  font_awesome_flutter: ^8.5.0
-  dio: "^3.0.10"
+  percent_indicator:            "^2.1.9+1"
+  font_awesome_flutter:         "^8.5.0"
+  dio:                          "^3.0.10"
   path_provider:
-  flutter_pdfview:      "^1.0.4"
-  just_audio:           "^0.6.4"
-  share:                "^0.6.5+4" # Share files with others
-  flutter_inappwebview: "^4.0.0+4" # Open webpage for live stream
-  url_launcher:         "^5.4.11"
+  flutter_pdfview:              "^1.0.4"
+  just_audio:                   "^0.6.13"
+  share:                        "^0.6.5+4" # Share files with others
+  flutter_inappwebview:         "^4.0.0+4" # Open webpage for live stream
+  url_launcher:                 "^5.4.11"
   sqflite:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_name: "^0.0.1"
+  flutter_launcher_icons: ^0.8.1
+
+
+flutter_launcher_name:
+  name: "خير أمة"
+
+flutter_icons:
+  image_path: 'assets/brand/lunch_icon.png'
+  android: true
+  ios: true
+
 
 flutter:
   uses-material-design: true

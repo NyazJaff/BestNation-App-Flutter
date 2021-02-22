@@ -76,6 +76,8 @@ class _LecturesState extends State<Lectures> {
 
   pullDataFromNetwork()async{
     await Firebase.initializeApp();
+    print(widget.classType);
+    print("classType");
     switch (widget.classType) {
       case DatabaseHelper.QUESTION_AND_ANSWER : // Enter this block if mark == 0
         await _pullQandA();
@@ -128,7 +130,7 @@ class _LecturesState extends State<Lectures> {
   }
 
   formatFirebaseDocuments(document){
-    document.documents.forEach((document) async {
+    document.docs.forEach((document) async {
       if (document['type'] == 'RECORD') {
         _displayPlayer = true;
       }

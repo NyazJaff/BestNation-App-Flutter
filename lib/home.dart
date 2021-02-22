@@ -241,7 +241,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                         child: Container(
                                           child: Column(
                                             children: [
-                                              createMainButton('العلماء وطلاب العلم', 'person_icon', ''),
+                                              createMainButton('العلماء وطلاب العلم', 'person_icon', '/lectures'),
                                               createMainButton('الفوائد المنتقاة', 'text_icon', ''),
                                               createMainButton('الإذاعة', 'book_with_pen_icon', '/live_broadcast'),
                                               createMainButton('الكتب', 'book_icon', '/books')

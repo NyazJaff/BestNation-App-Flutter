@@ -41,6 +41,7 @@ class _ListBooksState extends State<ListBooks> {
         .where('id', isGreaterThan: largestId)
         .get();
     document.docs.forEach((document) async {
+      print(document);
       await db.saveBook(new Book(
           id: document.data()['id'],
           name: document.data()['name'],
