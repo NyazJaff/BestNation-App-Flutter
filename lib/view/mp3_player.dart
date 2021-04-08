@@ -58,13 +58,13 @@ class ControlButtons extends StatelessWidget {
               );
             } else if (processingState != ProcessingState.completed) {
               return IconButton(
-                icon: Icon(Icons.pause),
+                icon: Icon(Icons.pause, ),
                 iconSize: 64.0,
                 onPressed: player.pause,
               );
             } else {
               return IconButton(
-                icon: Icon(Icons.replay),
+                icon: Icon(Icons.replay, color: UtilColours.PROGRESS,),
                 iconSize: 64.0,
                 onPressed: () => player.seek(Duration.zero,
                     index: player.effectiveIndices.first),
@@ -194,7 +194,7 @@ _showSliderDialog({
                   valueIndicatorColor: Colors.blue, // This is what you are asking for
                   inactiveTrackColor: Color(0xFF8D8E98), // Custom Gray Color
                   activeTrackColor: Colors.red,
-                  thumbColor: UtilColours.APP_BAR,
+                  thumbColor: UtilColours.PROGRESS,
                   // overlayColor: Color(0x29EB1555),  // Custom Thumb overlay Color
                   // thumbShape:
                   // RoundSliderThumbShape(enabledThumbRadius: 12.0),

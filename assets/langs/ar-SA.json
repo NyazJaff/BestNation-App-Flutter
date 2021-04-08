@@ -1,5 +1,5 @@
 {
-  "lectures": "محاضرات",
+  "lectures": "العلماء وطلاب العلم",
   "books": "الكتب",
   "saved": "تم الحفظ: ",
   "open_pdf": "افتح PDF",
@@ -24,5 +24,6 @@
   "broadcast": "الإذاعة",
   "about_shikh": "ترجمة الشيخ",
   "speech": "خطاب",
-  "no_records_currently_added!": "عدم وجود سجلات وأضاف في الوقت الحالي!"
+  "no_records_currently_added!": "عدم وجود سجلات وأضاف في الوقت الحالي!",
+  "texts": "الفوائد المنتقاة"
 }

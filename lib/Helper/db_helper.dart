@@ -15,6 +15,7 @@ class DatabaseHelper {
   static const String BOOKMARK = "BOOKMARK";
   static const String QUESTION_AND_ANSWER = "QUESTION_AND_ANSWER";
   static const String LECTURES = "LECTURE"; //currently not saving to db
+  static const String TEXTS = "TEXT"; //currently not saving to db
   static const String SPEECH = "SPEECH"; //currently not saving to db
 
   static final DatabaseHelper _instance = new DatabaseHelper.internal();
@@ -65,6 +66,7 @@ class DatabaseHelper {
         "firebaseId INTEGER, "
         "name TEXT, "
         "title TEXT, "
+        "body TEXT, "
         "question TEXT, "
         "answer TEXT, "
         "mp3URL TEXT, "
@@ -78,10 +80,12 @@ class DatabaseHelper {
 
   Epic formatEpicForSave(DocumentSnapshot documents, String category) {
     var document = documents.data();
+    print(documents.id);
     return new Epic(
       parentId: document['parentId'] != null ? document['parentId'] : "",
-      firebaseId: document['id'] != null ? document['id'] : "",
+      firebaseId: documents.id != null ? documents.id : "",
       name: document['name'] != null ? document['name'] : document['tile'] != null ?  document['tile'] : '',
+      body: document['body'] != null ? document['body'] : '',
       title: document['tile'] != null ? document['tile'] : '',
       question: document['question'] != null ? document['question'] : "",
       answer: document['answer'] != null ? document['answer'] : "",

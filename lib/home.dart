@@ -12,16 +12,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  Widget addImage(path, {size: 200.0}){
-    return  Container(
-        width: size,
-        child:
-        Image(
-            image:
-            AssetImage(path)
-        )
-    );
-  }
   Widget createLogoDisplay(){
     return Container(
       width: 130,
@@ -136,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget socialMediaLinks(which){
+  Widget socialMediaLinks(which, url){
     return  Padding(
       padding: EdgeInsets.all(6.0),
       child: ClipRRect(
@@ -153,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: EdgeInsets.all(0.0),
             onPressed: () async {
               await InAppBrowser.openWithSystemBrowser(
-                  url: "http://nyazjaff.co.uk");
+                  url: url);
             },
             child: null,
           ),
@@ -162,129 +152,97 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  BoxDecoration linearGradientBackground(){
-    return BoxDecoration(
-      boxShadow: [
-        BoxShadow(
-          color: Colors.grey.withOpacity(0.5),
-          spreadRadius: 2,
-          blurRadius:  10,
-          offset: Offset(0, 5), // changes position of shadow
-        ),
-      ],
-      gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          stops: [
-            0.2,
-            0.3,
-            0.4,
-            0.9
-          ],
-          colors: [
-            Color(0xff00d6c0),
-            Color(0xff00c9c2),
-            Color(0xff00bfc3),
-            Color(0xff00a7c6)
-          ]),
-      borderRadius: BorderRadius.circular(100),
-      // border: Border.all(width: 0, color: Colors.white)
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack (
-          children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topRight,
-                      end: Alignment.bottomLeft,
-                      stops: [
-                        0.1,
-                        0.2,
-                        0.3,
-                        0.9
-                      ],
-                      colors: [
-                        Color(0xfffcfcff),
-                        Color(0xffececfe),
-                        Color(0xffebebfe),
-                        Color(0xffc9cafc)
-                      ])),
-              child: Stack(
-                children: [
-                  SingleChildScrollView(
-                      child: AnimationLimiter(
-                        child: Column(
-                            children: AnimationConfiguration.toStaggeredList(
-                                duration: const Duration(milliseconds: 800),
-                                childAnimationBuilder: (widget) => SlideAnimation(
-                                  horizontalOffset: 50.0,
-                                  child: FadeInAnimation(
-                                    child: widget,
+      body: Container(
+        height: double.infinity,
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topRight,
+                end: Alignment.bottomLeft,
+                stops: [
+                  0.1,
+                  0.2,
+                  0.3,
+                  0.9
+                ],
+                colors: [
+                  Color(0xfffcfcff),
+                  Color(0xffececfe),
+                  Color(0xffebebfe),
+                  Color(0xffc9cafc)
+                ])),
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+                child: AnimationLimiter(
+                  child: Column(
+                      children: AnimationConfiguration.toStaggeredList(
+                          duration: const Duration(milliseconds: 800),
+                          childAnimationBuilder: (widget) => SlideAnimation(
+                            horizontalOffset: 50.0,
+                            child: FadeInAnimation(
+                              child: widget,
+                            ),
+                          ),
+                          children: <Widget>[
+                            SizedBox(height: 50),
+                            createLogoDisplay(),
+                            SizedBox(height: 20),
+                            createTitle('{خير أمة}'),
+                            createTitle('{شبكة علمية دعوية على منهج أهل السنة والجماعة}'),
+                            SizedBox(height: 20),
+                            addImage("assets/brand/arrow.png"),
+                            Container (
+                              child: Align (
+                                  alignment: Alignment.topCenter,
+                                  child: Container(
+                                    child: Column(
+                                      children: [
+                                        createMainButton('العلماء وطلاب العلم', 'person_icon', '/lectures'),
+                                        createMainButton('الفوائد المنتقاة', 'text_icon', '/texts'),
+                                        createMainButton('الإذاعة', 'book_with_pen_icon', '/live_broadcast'),
+                                        createMainButton('الكتب', 'book_icon', '/books')
+                                      ],
+                                    ),
+                                  )
+                              ),
+                            ),
+                            addImage("assets/brand/arrow.png"),
+                            SizedBox(height: 20),
+                            createTitle('• تابعنا على مواقع التواصل وفقك الله لطاعته:'),
+                            Container(
+                              child: Align(
+                                alignment: FractionalOffset(0, 0.8),
+                                child: Container(
+                                  child: Row (
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      socialMediaLinks("youtube",   'https://www.youtube.com/channel/UCm2EffIVtfZp1QdoTf0RjXA'),
+                                      socialMediaLinks("tiktok",  'https://vm.tiktok.com/ZSJMF3g2Y/'),
+                                      socialMediaLinks("twitter",   'https://twitter.com/bestnationnw'),
+                                      socialMediaLinks("instagram", 'https://www.instagram.com/bestnationnw/'),
+                                      socialMediaLinks("facebook",  'https://www.facebook.com/bestnationnw/'),
+                                    ],
                                   ),
                                 ),
-                                children: <Widget>[
-                                  SizedBox(height: 50),
-                                  createLogoDisplay(),
-                                  SizedBox(height: 20),
-                                  createTitle('{خير أمة}'),
-                                  createTitle('{شبكة علمية دعوية على منهج أهل السنة والجماعة}'),
-                                  SizedBox(height: 20),
-                                  addImage("assets/brand/arrow.png"),
-                                  Container (
-                                    child: Align (
-                                        alignment: Alignment.topCenter,
-                                        child: Container(
-                                          child: Column(
-                                            children: [
-                                              createMainButton('العلماء وطلاب العلم', 'person_icon', '/lectures'),
-                                              createMainButton('الفوائد المنتقاة', 'text_icon', ''),
-                                              createMainButton('الإذاعة', 'book_with_pen_icon', '/live_broadcast'),
-                                              createMainButton('الكتب', 'book_icon', '/books')
-                                            ],
-                                          ),
-                                        )
-                                    ),
-                                  ),
-                                  addImage("assets/brand/arrow.png"),
-                                  SizedBox(height: 20),
-                                  createTitle('• تابعنا على مواقع التواصل وفقك '),
-                                  Container(
-                                    child: Align(
-                                      alignment: FractionalOffset(0, 0.8),
-                                      child: Container(
-                                        child: Row (
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            socialMediaLinks("youtube"),
-                                            socialMediaLinks("snapchat"),
-                                            socialMediaLinks("twitter"),
-                                            socialMediaLinks("instagram"),
-                                            socialMediaLinks("facebook"),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(height: 10),
-                                  addImage("assets/brand/home_verses.png", size: 320.0),
-                                  SizedBox(height: 20),
-                                  SizedBox(height:30),
-                                  devNJaff(),
-                                  SizedBox(height:15),
-                                ]
-                            )
-                        ),
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            addImage("assets/brand/home_verses.png", size: 320.0),
+                            SizedBox(height: 20),
+                            SizedBox(height:30),
+                            devNJaff(),
+                            SizedBox(height:15),
+                          ]
                       )
                   ),
-                ],
-              ),
+                )
             ),
-          ]
+          ],
+        ),
       ),
     );
   }

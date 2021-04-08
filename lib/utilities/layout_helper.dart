@@ -8,7 +8,7 @@ final textAndIconColour =     Color(0xFF545756);
 final textAndIconHintColour = Color(0xFF969998);
 final logoYellow =            Color(0xFFFFCA0A);
 
-final appBackgroundFirst =    Color(0xFFf7f7f7);
+final appBackgroundFirst =    Color(0xFFc4c4e6);
 final appBackgroundSecond =   Color(0xFFededed);
 
 
@@ -22,6 +22,36 @@ TextStyle arabicTxtStyle({paramColour: UtilColours.APP_BAR, double paramSize: 20
       letterSpacing: 2,
       height: 1.5
   );
+}
+
+Widget addImage(path, {size: 200.0}){
+  return  Container(
+      width: size,
+      child:
+      Image(
+          image:
+          AssetImage(path)
+      )
+  );
+}
+
+BoxDecoration appBackgroundGradient(){
+  return BoxDecoration(
+      gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          stops: [
+            0.1,
+            0.2,
+            0.3,
+            0.9
+          ],
+          colors: [
+            Color(0xfffcfcff),
+            Color(0xffececfe),
+            Color(0xffebebfe),
+            Color(0xffc9cafc)
+          ]));
 }
 
 Widget withRTL(widget){
@@ -73,10 +103,43 @@ Widget emptyAppBar(){
   );
 }
 
-BoxDecoration selectedListTileDec() {
+BoxDecoration linearGradientBackground({radius: 100.0}){
   return BoxDecoration(
+    boxShadow: [
+      BoxShadow(
+        color: Colors.grey.withOpacity(0.5),
+        spreadRadius: 2,
+        blurRadius:  10,
+        offset: Offset(0, 5), // changes position of shadow
+      ),
+    ],
+    gradient: LinearGradient(
+        begin: Alignment.topRight,
+        end: Alignment.bottomLeft,
+        stops: [
+          0.2,
+          0.3,
+          0.4,
+          0.9
+        ],
+        colors: [
+          Color(0xff00d6c0),
+          Color(0xff00c9c2),
+          Color(0xff00bfc3),
+          Color(0xff00a7c6)
+        ]),
+    borderRadius: BorderRadius.circular(radius),
+    // border: Border.all(width: 0, color: Colors.white)
+  );
+}
+
+BoxDecoration selectedListTileDec({colour: 0xffe0e0ef}) {
+  return BoxDecoration(
+    gradient: LinearGradient(
+        colors: [Color(colour)],
+        stops: [0.1]),
     border: Border.all(
-      color: UtilColours.APP_BAR,
+      color: appBackgroundFirst,
     ),
     borderRadius: BorderRadius.circular(20.0),
   );

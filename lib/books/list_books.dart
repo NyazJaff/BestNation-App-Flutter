@@ -17,6 +17,16 @@ import 'package:bestnation/utilities/progress_button/iconed_button.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 class ListBooks extends StatefulWidget {
+
+  final String parentId;
+  final String title;
+
+  ListBooks({
+    Key key,
+    this.title,
+    this.parentId,
+  }) : super(key: key);
+
   @override
   _ListBooksState createState() => _ListBooksState();
 }
@@ -37,21 +47,25 @@ class _ListBooksState extends State<ListBooks> {
     await Firebase.initializeApp();
     int largestId = await db.largestBookId();
     QuerySnapshot document = await FirebaseFirestore.instance
-        .collection("BookItem")
-        .where('id', isGreaterThan: largestId)
+        .collection("books")
+        .where('parentId', isEqualTo: widget.parentId)
+        // .where('id', isGreaterThan: largestId)
         .get();
-    document.docs.forEach((document) async {
-      print(document);
-      await db.saveBook(new Book(
-          id: document.data()['id'],
-          name: document.data()['name'],
-          description: document.data()['description'],
-          imageURL: document.data()['imageURL'],
-          pdfURL: document.data()['pdfURL']));
-      // createFileOfUrl(document.data()['imageURL']).then((value) {
-      //   // setState(() {});
-      // });
-    });
+
+    if(largestId == 0){
+      document.docs.forEach((document) async {
+        print(document);
+        await db.saveBook(new Book(
+            id: document.data()['id'],
+            name: document.data()['name'],
+            description: document.data()['name'],
+            imageURL: document.data()['imageURL'],
+            pdfURL: document.data()['pdfURL']));
+        // createFileOfUrl(document.data()['imageURL']).then((value) {
+        //   // setState(() {});
+        // });
+      });
+    }
     setState(() {
       loading = false;
     });
@@ -68,11 +82,12 @@ class _ListBooksState extends State<ListBooks> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-//        extendBodyBehindAppBar: true,
-//        backgroundColor: Colors.red,
-        appBar: app_bar(context, "books".tr()),
-        body: Scaffold(
+    return Container(
+        height: double.infinity,
+        decoration: appBackgroundGradient(),
+        child: Scaffold(
+            appBar: app_bar(context, widget.title),
+            backgroundColor: Colors.transparent,
             body: Stack(children: <Widget>[
               appBgImage(),
               Container(

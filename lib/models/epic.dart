@@ -1,8 +1,9 @@
 class Epic {
   final int id;
-  final int parentId;
-  final int firebaseId;
+  final String parentId;
+  final String firebaseId;
   final String name;
+  final String body;
   final String title;
   final String question;
   final String answer;
@@ -12,7 +13,7 @@ class Epic {
   final String type;
   final String category;
 
-  Epic({ this.id, this.parentId, this.firebaseId, this.name, this.title, this.question, this.answer, this.mp3URL, this.pdfURL, this.createdTime, this.type, this.category});
+  Epic({ this.id, this.parentId, this.firebaseId, this.name, this.body = '', this.title, this.question, this.answer, this.mp3URL, this.pdfURL, this.createdTime, this.type, this.category});
 
   Map<String, dynamic> toMap() {
     return {
@@ -21,6 +22,7 @@ class Epic {
       'firebaseId': firebaseId, //Used to find the latest record on FB
       'name': name,
       'title': title,
+      'body': body,
       'question': question,
       'answer': answer,
       'mp3URL': mp3URL,
@@ -37,6 +39,7 @@ class Epic {
         'parentId: $parentId, '
         'firebaseId: $firebaseId, '
         'name: $name, '
+        'body: $body, '
         'title: $title, '
         'question: $question, '
         'answer: $answer, '

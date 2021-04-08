@@ -239,42 +239,46 @@ class _BookmarksAndCommentsState extends State<BookmarksAndComments> {
         debugShowCheckedModeBanner: false,
         home:  DefaultTabController (
           length: 2,
-          child: new Scaffold(
-            appBar: AppBar(
-              leading: new IconButton(
-                icon: new Icon(Icons.arrow_back, color: UtilColours.APP_BAR_NAV_BUTTON),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-              backgroundColor: UtilColours.APP_BAR,
+          child: Container(
+            height: double.infinity,
+            decoration: appBackgroundGradient(),
+            child: new Scaffold(
+              backgroundColor: Colors.transparent,
+              appBar: AppBar(
+                leading: new IconButton(
+                  icon: new Icon(Icons.arrow_back, color: UtilColours.APP_BAR),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+                backgroundColor: Colors.transparent,
 //          backgroundColor: Color(0x44000000),
-              elevation: 0,
-              title: Text(widget.title,  style: arabicTxtStyle(paramColour: Colors.white)),
-              bottom: new TabBar(
-                  isScrollable: true,
-                  tabs: <Widget>[
-                    Tab(
-                      child: Container(
-                        child: Text(
-                          'bookmark'.tr(),
-                          style: arabicTxtStyle(paramColour: Colors.white, paramSize: 18.0),
+                elevation: 0,
+                title: Text(widget.title,  style: arabicTxtStyle(paramColour: UtilColours.APP_BAR)),
+                bottom: new TabBar(
+                    isScrollable: true,
+                    tabs: <Widget>[
+                      Tab(
+                        child: Container(
+                          child: Text(
+                            'bookmark'.tr(),
+                            style: arabicTxtStyle(paramColour: UtilColours.APP_BAR, paramSize: 18.0),
+                          ),
                         ),
                       ),
-                    ),
-                    Tab(
-                      child: Container(
-                        child: Text(
-                          'comment'.tr(),
-                          style: arabicTxtStyle(paramColour: Colors.white, paramSize: 18.0),
+                      Tab(
+                        child: Container(
+                          child: Text(
+                            'comment'.tr(),
+                            style: arabicTxtStyle(paramColour: UtilColours.APP_BAR, paramSize: 18.0),
+                          ),
                         ),
-                      ),
-                    )
-                  ]
+                      )
+                    ]
+                ),
               ),
-            ),
-            body: TabBarView(
-              children: <Widget>[
-                Container(
-                  child:  bookmarkList(),
+              body: TabBarView(
+                children: <Widget>[
+                  Container(
+                    child:  bookmarkList(),
 //                    Column(
 //                       children: <Widget>[
 //                         IconButton(icon: Icon(Icons.view_list), onPressed: () {
@@ -283,12 +287,13 @@ class _BookmarksAndCommentsState extends State<BookmarksAndComments> {
 //                         },),
 //                       ],
 //                    )
-                ),
-                Container(
-                  child: commentList(),
-                )
+                  ),
+                  Container(
+                    child: commentList(),
+                  )
 
-              ],
+                ],
+              ),
             ),
           ),
         ),

@@ -39,7 +39,7 @@ flutter_launcher_name:
   name: "خير أمة"
 
 flutter_icons:
-  image_path: 'assets/brand/lunch_icon.png'
+  image_path: 'assets/brand/lunch_icon.jpg'
   android: true
   ios: true
 
@@ -58,4 +58,9 @@ flutter:
         - asset: assets/fonts/tajawal/Tajawal-Bold.ttf
         - asset: assets/fonts/tajawal/Tajawal-Medium.ttf
         - asset: assets/fonts/tajawal/Tajawal-Regular.ttf
+
+    - family: UthmanTahaNaskh
+      fonts:
+        - asset: assets/fonts/uthman_taha_naskh/Uthman-Taha-Naskh-Regular.ttf
+        - asset: assets/fonts/uthman_taha_naskh/Uthman-Taha-Naskh-Bold.ttf
 

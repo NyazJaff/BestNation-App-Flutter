@@ -1,6 +1,7 @@
 import 'package:bestnation/utilities/layout_helper.dart';
 import 'package:bestnation/view/lectures.dart';
 import 'package:bestnation/view/live_broadcast.dart';
+import 'package:bestnation/view/texts.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -33,10 +34,11 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => MyHomePage(),
-        '/books': (context) => ListBooks(),
+        '/books': (context) => ListBooks(title:'books'.tr(), parentId: '0',),
+        '/texts': (context) => Texts(title:'texts'.tr(), parentId: '0', classType: DatabaseHelper.TEXTS),
         '/live_broadcast': (context) => LiveBroadcast(),
-        '/lectures': (context) => Lectures(title:'lectures'.tr(), parentId: 0, classType: DatabaseHelper.LECTURES),
-        '/speeches': (context) => Lectures(title:'speech'.tr(), parentId: 0, classType: DatabaseHelper.SPEECH),
+        '/lectures': (context) => Lectures(title:'lectures'.tr(), parentId: '0', classType: DatabaseHelper.LECTURES),
+        '/speeches': (context) => Lectures(title:'speech'.tr(), parentId: '0', classType: DatabaseHelper.SPEECH),
       },
 
 
