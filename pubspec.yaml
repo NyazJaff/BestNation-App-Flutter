@@ -26,7 +26,7 @@ dependencies:
   share:                        "^0.6.5+4" # Share files with others
   flutter_inappwebview:         "^4.0.0+4" # Open webpage for live stream
   url_launcher:                 "^5.4.11"
-  sqflite:
+  sqflite:                      "^1.3.2"
 
 dev_dependencies:
   flutter_test:

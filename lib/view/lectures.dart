@@ -130,6 +130,7 @@ class _LecturesState extends State<Lectures> {
   }
 
   formatFirebaseDocuments(document){
+    print(document.toString());
     document.docs.forEach((document) async {
       if (document['type'] == 'RECORD') {
         _displayPlayer = true;

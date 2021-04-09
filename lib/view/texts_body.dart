@@ -77,9 +77,9 @@ class _TextsBodyState extends State<TextsBody> {
 
                                       Row(
                                         children: [
-                                          Container(
-                                            padding: EdgeInsets.only(bottom:30),
-                                              child: Icon(Icons.remove)),
+                                          // Container(
+                                          //   padding: EdgeInsets.only(bottom:30),
+                                          //     child: Icon(Icons.remove)),
                                           SizedBox(width: 10,),
                                           Flexible(
                                             child: Text(
