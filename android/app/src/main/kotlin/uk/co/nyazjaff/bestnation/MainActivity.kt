@@ -1,4 +1,4 @@
-package uk.co.nyazjaff.bestnation.bestnation
+package uk.co.nyazjaff.bestnation
 
 import io.flutter.embedding.android.FlutterActivity
 
