@@ -1,14 +1,11 @@
 import 'package:bestnation/Helper/util.dart';
-import 'package:bestnation/class/Input.dart';
 import 'package:bestnation/models/epic_model.dart';
-import 'package:bestnation/view/mp3_player.dart';
 import 'package:bestnation/view/texts_body.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:bestnation/utilities/layout_helper.dart';
 import 'package:bestnation/utilities/chasing_dots.dart';
-import 'package:just_audio/just_audio.dart';
 import '../Helper/db_helper.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -96,7 +93,7 @@ class _TextsState extends State<Texts> {
         height: double.infinity,
         decoration: appBackgroundGradient(),
         child: Scaffold(
-          appBar: app_bar(context, widget.title),
+          appBar: appBar(context, widget.title),
           backgroundColor: Colors.transparent,
           body: Stack(children: <Widget>[
             Positioned.fill(

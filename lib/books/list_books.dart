@@ -105,7 +105,7 @@ class _ListBooksState extends State<ListBooks> {
         height: double.infinity,
         decoration: appBackgroundGradient(),
         child: Scaffold(
-          appBar: app_bar(context, widget.title),
+          appBar: appBar(context, widget.title),
           backgroundColor: Colors.transparent,
           body: Stack(children: <Widget>[
             appBgImage(),
@@ -167,8 +167,6 @@ class _ListBooksState extends State<ListBooks> {
         itemCount: records.length,
         itemBuilder: (BuildContext context, int index) {
           var entry = records[index];
-          final GlobalKey<ScaffoldState> scaffoldKey =
-              new GlobalKey<ScaffoldState>();
           return Container(
             margin: const EdgeInsets.only(left: 10.0, right: 10.0),
             child: ListTile(

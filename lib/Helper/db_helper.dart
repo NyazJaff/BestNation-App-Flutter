@@ -115,7 +115,7 @@ class DatabaseHelper {
 
   saveEpic(Epic epic) async {
     var dbClient = await db;
-    int res = await dbClient.insert(("Epic"), epic.toMap());
+    await dbClient.insert(("Epic"), epic.toMap());
   }
 
   largestEpicFirebaseId(category) async {

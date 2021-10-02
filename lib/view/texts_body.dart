@@ -2,7 +2,6 @@ import 'package:bestnation/Helper/util.dart';
 import 'package:flutter/material.dart';
 import 'package:bestnation/utilities/layout_helper.dart';
 import '../Helper/db_helper.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
 import 'package:share/share.dart';
 
@@ -41,7 +40,7 @@ class _TextsBodyState extends State<TextsBody> {
         height: double.infinity,
         decoration: appBackgroundGradient(),
         child: Scaffold(
-          appBar: app_bar(context, widget.title),
+          appBar: appBar(context, widget.title),
           backgroundColor: Colors.transparent,
           body: Stack (
               children: <Widget>[

@@ -16,7 +16,6 @@ class LiveBroadcast extends StatefulWidget {
 class _LiveBroadcastState extends State<LiveBroadcast> {
   String url = "";
   String title = "";
-  ConcatenatingAudioSource _playlist;
   List<AudioSource> mp3List = [];
   bool isThereNetwork = false;
   AudioPlayer _player = AudioPlayer();
@@ -62,7 +61,7 @@ class _LiveBroadcastState extends State<LiveBroadcast> {
         height: double.infinity,
         decoration: appBackgroundGradient(),
         child: Scaffold(
-          appBar: app_bar(context, 'broadcast'.tr()),
+          appBar: appBar(context, 'broadcast'.tr()),
           backgroundColor: Colors.transparent,
           body: Stack(children: <Widget>[
             Positioned.fill(
@@ -81,7 +80,7 @@ class _LiveBroadcastState extends State<LiveBroadcast> {
                         Padding(
                           padding: const EdgeInsets.all(10.0),
                         ),
-                        isThereNetwork ? Container(
+                        isThereNetwork && title != "" ? Container(
                             decoration: valueBoxDecorationStyle, 
                             padding: EdgeInsets.all(10),
                             width: 250,

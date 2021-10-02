@@ -77,20 +77,11 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
 
   }
 
-  _onKeyboardChanged(bool isVisible) {
-    if (isVisible) {
-      print("KEYBOARD VISIBLE");
-    } else {
-      print("KEYBOARD HIDDEN");
-      refreshWindow();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset : false,
-      appBar: app_bar(context, widget.title),
+      appBar: appBar(context, widget.title),
       body: Stack(
         children: <Widget>[
           Column(
@@ -221,14 +212,14 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
 
   refreshWindow () async {
     GlobalKey key = GlobalKey();
-    final current_page_param = await _pdfViewController.getCurrentPage();
+    final currentPageParam = await _pdfViewController.getCurrentPage();
 
     Navigator.pop(context);
     Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) =>
-              PDFScreen(bookId: widget.bookId, path: widget.path, title: widget.title, currentPage: current_page_param, key: key,)),
+              PDFScreen(bookId: widget.bookId, path: widget.path, title: widget.title, currentPage: currentPageParam, key: key,)),
     );
   }
 

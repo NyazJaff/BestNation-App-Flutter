@@ -4,11 +4,11 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart';
 
-double util_winHeightSize(BuildContext context){
+double utilWinHeightSize(BuildContext context){
   return MediaQuery.of(context).size.height;
 }
 
-app_bar(BuildContext context, title){
+appBar(BuildContext context, title){
   return  AppBar(
     leading: new IconButton(
       icon: new Icon(Icons.arrow_back, color: UtilColours.APP_BAR),
@@ -72,7 +72,7 @@ localUrlPath(url) async {
 
 Future<File> doesUrlFileExits(url) async{
   String path = await localUrlPath(url);
-  if(File(await path).existsSync() == true){
+  if(File(path).existsSync() == true){
     return File(path);
   }
   return null;

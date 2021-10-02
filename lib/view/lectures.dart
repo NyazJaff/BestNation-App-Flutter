@@ -65,7 +65,7 @@ class _LecturesState extends State<Lectures> {
         }else if (isThereNetwork) {
           Uri url = Uri.parse(e.mp3URL);
           mp3List.add(AudioSource.uri(url));
-        };
+        }
       }
     }
 
@@ -173,7 +173,7 @@ class _LecturesState extends State<Lectures> {
         height: double.infinity,
         decoration: appBackgroundGradient(),
         child: Scaffold(
-          appBar: app_bar(context, widget.title),
+          appBar: appBar(context, widget.title),
           backgroundColor: Colors.transparent,
           body: Stack(children: <Widget>[
             appBgImage(),
@@ -314,8 +314,6 @@ class _LecturesState extends State<Lectures> {
         itemCount: records.length,
         itemBuilder: (BuildContext context, int index) {
           var entry = records[index];
-          final GlobalKey<ScaffoldState> scaffoldKey =
-              new GlobalKey<ScaffoldState>();
           return Container(
             margin: const EdgeInsets.only(left: 10.0, right: 10.0),
             // padding: const EdgeInsets.all(10.0),

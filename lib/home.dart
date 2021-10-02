@@ -98,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
   Widget addPadding(context){
-    return Padding(padding: EdgeInsets.only(top: util_winHeightSize(context) > 700 ? util_winHeightSize(context)  * 0.2 : util_winHeightSize(context) *  0.04));
+    return Padding(padding: EdgeInsets.only(top: utilWinHeightSize(context) > 700 ? utilWinHeightSize(context)  * 0.2 : utilWinHeightSize(context) *  0.04));
   }
   Widget devNJaff(){
     return Align(
