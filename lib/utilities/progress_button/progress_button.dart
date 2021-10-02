@@ -4,7 +4,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import 'iconed_button.dart';
 
-enum ButtonState { idle, loading, success, fail }
+enum ButtonState { idle, loading, success, fail, delete }
 
 class ProgressButton extends StatefulWidget {
   final Map<ButtonState, Widget> stateWidgets;
@@ -21,6 +21,7 @@ class ProgressButton extends StatefulWidget {
   final progressIndicatorSize;
   final MainAxisAlignment progressIndicatorAligment;
   final EdgeInsets padding;
+  bool loading;
 
   ProgressButton({
     Key key,
@@ -38,6 +39,7 @@ class ProgressButton extends StatefulWidget {
     this.progressIndicator,
     this.progressIndicatorAligment = MainAxisAlignment.spaceBetween,
     this.padding = EdgeInsets.zero,
+    this.loading = false,
   })  : assert(
           stateWidgets != null &&
               stateWidgets.keys.toSet().containsAll(ButtonState.values.toSet()),
@@ -58,7 +60,8 @@ class ProgressButton extends StatefulWidget {
   factory ProgressButton.icon({
     @required Map<ButtonState, IconedButton> iconedButtons,
     Function onPressed,
-    ButtonState state = ButtonState.idle,
+    state = ButtonState.idle,
+    loading = false,
     Function animationEnd,
     double percent: 0.0,
     maxWidth: 170.0,
@@ -89,7 +92,9 @@ class ProgressButton extends StatefulWidget {
       ButtonState.fail: buildChildWithIcon(
           iconedButtons[ButtonState.fail], iconPadding, textStyle),
       ButtonState.success: buildChildWithIcon(
-          iconedButtons[ButtonState.success], iconPadding, textStyle)
+          iconedButtons[ButtonState.success], iconPadding, textStyle),
+      ButtonState.delete: buildChildWithIcon(
+          iconedButtons[ButtonState.delete], iconPadding, textStyle)
     };
 
     Map<ButtonState, Color> stateColors = {
@@ -97,6 +102,7 @@ class ProgressButton extends StatefulWidget {
       ButtonState.loading: iconedButtons[ButtonState.loading].color,
       ButtonState.fail: iconedButtons[ButtonState.fail].color,
       ButtonState.success: iconedButtons[ButtonState.success].color,
+      ButtonState.delete: iconedButtons[ButtonState.delete].color,
     };
 
     return ProgressButton(
@@ -110,6 +116,7 @@ class ProgressButton extends StatefulWidget {
       minWidth: minWidth,
       radius: radius,
       height: height,
+      loading: loading,
       progressIndicatorSize: progressIndicatorSize,
       progressIndicatorAligment: MainAxisAlignment.center,
       progressIndicator: progressIndicator,
@@ -223,7 +230,8 @@ class _ProgressButtonState extends State<ProgressButton>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
+    return widget.loading == false ?
+      AnimatedBuilder(
       animation: colorAnimationController,
       builder: (context, child) {
         return AnimatedContainer(
@@ -241,6 +249,6 @@ class _ProgressButtonState extends State<ProgressButton>
                   colorAnimation == null ? true : colorAnimation.isCompleted),
             ));
       },
-    );
+    ) : Container();
   }
 }

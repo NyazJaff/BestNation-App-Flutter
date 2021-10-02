@@ -25,7 +25,7 @@ Widget buildChildWithIC(
     crossAxisAlignment: WrapCrossAlignment.center,
     children: <Widget>[
       icon,
-      Padding(padding: EdgeInsets.all(gap)),
+      // Padding(padding: EdgeInsets.all(gap)),
       buildText(text, textStyle)
     ],
   );

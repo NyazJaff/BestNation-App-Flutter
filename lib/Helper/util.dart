@@ -65,39 +65,40 @@ getSystemPath() async {
   return (await getApplicationDocumentsDirectory()).path;
 }
 
-Future<File> doesUrlFileExits(context, url) async{
-  final filename = url.substring(url.lastIndexOf("/") + 1);
-  String dir = (await getApplicationDocumentsDirectory()).path;
-  if(File(await '$dir/$filename').existsSync() == true){
-    return File('$dir/$filename');
+localUrlPath(url) async {
+  String dir = await getSystemPath();
+  return "$dir/" + url.substring(url.lastIndexOf("/") + 1);
+}
+
+Future<File> doesUrlFileExits(url) async{
+  String path = await localUrlPath(url);
+  if(File(await path).existsSync() == true){
+    return File(path);
   }
   return null;
 }
 
 deleteUrlFileIfExits(url) async{
-  //TODO write deletion
-  final filename = url.substring(url.lastIndexOf("/") + 1);
-  String dir = (await getApplicationDocumentsDirectory()).path;
-  if(File('$dir/$filename').existsSync() == true){
-    return true;
+  String path = await localUrlPath(url);
+  if(File(path).existsSync() == true){
+    return File(path).delete();
   }
   return false;
 }
 
-Future<File> createFileOfUrl(String url) async {
-  final filename = url.substring(url.lastIndexOf("/") + 1);
-  String dir = (await getApplicationDocumentsDirectory()).path;
-
-  File file;
-  if(File(await '$dir/$filename').existsSync() == true){
-    file = File('$dir/$filename');
-  }else{
-    var request = await HttpClient().getUrl(Uri.parse(url));
-    var response = await request.close();
-    var bytes = await consolidateHttpClientResponseBytes(response);
-
-    file = new File('$dir/$filename');
-    await file.writeAsBytes(bytes);
+hasNetwork() async {
+  bool network = false;
+  try {
+    final result = await InternetAddress.lookup('google.com');
+    if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+      network = true;
+    }
+  } on SocketException catch (error) {
+    print(error);
   }
-  return file;
+  return network;
+}
+
+shareTextFormatter(text) {
+  return text + "\n\n\n   (تطبيق خير أمة) \n • لتحميل التطبيق : https://www.bestnationapp.com/" ;
 }

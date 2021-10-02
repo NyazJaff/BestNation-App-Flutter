@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:bestnation/models/book_model.dart';
 import 'package:bestnation/models/comments_and_bookmarks_model.dart';
-import 'package:bestnation/models/epic.dart';
+import 'package:bestnation/models/epic_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:path/path.dart';
@@ -80,7 +80,6 @@ class DatabaseHelper {
 
   Epic formatEpicForSave(DocumentSnapshot documents, String category) {
     var document = documents.data();
-    print(documents.id);
     return new Epic(
       parentId: document['parentId'] != null ? document['parentId'] : "",
       firebaseId: documents.id != null ? documents.id : "",
@@ -160,6 +159,13 @@ class DatabaseHelper {
     return res;
   }
 
+  Future<Book> bookByPdfUrl(pdfURL) async {
+    var dbClient = await db;
+
+    List<Map> result =  await dbClient.rawQuery("SELECT * from Book where pdfURL = ? limit 1", [pdfURL]);
+    return formatBookForReturn(result[0]);
+  }
+
   largestBookId() async {
     var dbClient = await db;
     List<Map> result =  await dbClient.rawQuery("SELECT MAX(id) as id from Book");
@@ -169,7 +175,6 @@ class DatabaseHelper {
         largestId = element['id'];
       }
     });
-    print('largest Book Id: ' + largestId.toString());
     return largestId;
   }
 
@@ -194,14 +199,18 @@ class DatabaseHelper {
 
     // Convert the List<Map<String, dynamic> into a List<Book>.
     return List.generate(maps.length, (i) {
-      return Book(
-        id: maps[i]['id'],
-        name: maps[i]['name'],
-        description: maps[i]['description'],
-        imageURL: maps[i]['imageURL'],
-        pdfURL: maps[i]['pdfURL'],
-      );
+      return formatBookForReturn(maps[i]);
     });
+  }
+
+  Book formatBookForReturn(Map<String, dynamic> map){
+    return Book(
+      id: map['id'],
+      name: map['name'],
+      description: map['description'],
+      imageURL: map['imageURL'],
+      pdfURL: map['pdfURL'],
+    );
   }
 
   Future<int> saveCommentOrBookmark(CommentAndBookmark object) async {

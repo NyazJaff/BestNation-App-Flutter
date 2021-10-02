@@ -1,5 +1,6 @@
 import 'package:bestnation/Helper/util.dart';
-import 'package:bestnation/models/epic.dart';
+import 'package:bestnation/class/Input.dart';
+import 'package:bestnation/models/epic_model.dart';
 import 'package:bestnation/view/mp3_player.dart';
 import 'package:bestnation/view/texts_body.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,6 +23,7 @@ class Texts extends StatefulWidget {
   final String title;
   final String parentId;
   final String classType;
+
   @override
   _TextsState createState() => _TextsState();
 }
@@ -29,8 +31,9 @@ class Texts extends StatefulWidget {
 class _TextsState extends State<Texts> {
   var db = new DatabaseHelper();
   List<Epic> records = [];
-
   bool loading = true;
+  TextEditingController nameSearch = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -42,8 +45,7 @@ class _TextsState extends State<Texts> {
     super.dispose();
   }
 
-
-  pullDataFromNetwork()async{
+  pullDataFromNetwork() async {
     await Firebase.initializeApp();
     switch (widget.classType) {
       case DatabaseHelper.TEXTS:
@@ -51,7 +53,7 @@ class _TextsState extends State<Texts> {
         break;
     }
 
-    setState((){});
+    setState(() {});
   }
 
   _pullTexts() async {
@@ -65,10 +67,11 @@ class _TextsState extends State<Texts> {
     return records;
   }
 
-
-  formatFirebaseDocuments(document){
+  formatFirebaseDocuments(document) {
+    records = [];
     document.docs.forEach((document) async {
-      Epic epic = db.formatEpicForSave(document, widget.classType); // eg, classType = DatabaseHelper.LECTURES
+      Epic epic = db.formatEpicForSave(document,
+          widget.classType); // eg, classType = DatabaseHelper.LECTURES
       // await db.saveEpic(epic);
       records.add(epic);
     });
@@ -77,27 +80,14 @@ class _TextsState extends State<Texts> {
     return records;
   }
 
-  innerNavigate(title, firebaseId){
-    var classToCall = Texts(title: title, parentId: firebaseId, classType: widget.classType, key: UniqueKey());
-    Navigator.push(context, MaterialPageRoute(builder: (context) => classToCall));
-  }
-
-  Widget createLogoDisplay(){
-    return Container(
-      width: 200,
-      height: 130,
-      padding: EdgeInsets.all(10),
-      decoration: linearGradientBackground(radius: 10.0),
-      child: Container(
-        decoration:  BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(
-                'assets/brand/text-view-heading.png'),
-            fit: BoxFit.contain,
-          ),
-        ),
-      ),
-    );
+  innerNavigate(title, firebaseId) {
+    var classToCall = Texts(
+        title: title,
+        parentId: firebaseId,
+        classType: widget.classType,
+        key: UniqueKey());
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => classToCall));
   }
 
   @override
@@ -108,131 +98,137 @@ class _TextsState extends State<Texts> {
         child: Scaffold(
           appBar: app_bar(context, widget.title),
           backgroundColor: Colors.transparent,
-          body: Stack (
-              children: <Widget>[
-                Positioned.fill(
-                  child: Align(
-                      alignment: Alignment.center,
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
-                          ),
-                          createLogoDisplay(),
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
-                          ),
-                          loading == false
-                              ? records.length > 0
-                              ? Column(
-                            children: [
-                              Container(
-                                height: MediaQuery.of(context).size.height * 0.6,
-                                child: SingleChildScrollView(
-                                    child: textsList()
-                                ),
-                              )
-                            ],)  // Display Record
-                              : Container(
-                              child: Center(
-                                  child: Text(
+          body: Stack(children: <Widget>[
+            Positioned.fill(
+                child: Align(
+                    alignment: Alignment.center,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                        ),
+                        createLogoDisplay('text-view-heading.png'),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                        ),
+                        loading == false
+                            ? records.length > 0
+                                ? Column(
+                                    children: [
+                                      // Container(
+                                      //   width: 300,
+                                      //   child: Input(
+                                      //     onNameChangeCallback: onNameChangeCallback,
+                                      //     controller:  nameSearch,
+                                      //     hint:        '',
+                                      //     leadingIcon: Icons.search,
+                                      //   ),
+                                      // ),
+                                      // SizedBox(height: 20.0),
+                                      Container(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.6,
+                                        child: SingleChildScrollView(
+                                            child: textsList()),
+                                      )
+                                    ],
+                                  ) // Display Record
+                                : Container(
+                                    child: Center(
+                                        child: Text(
                                     "no_records_currently_added!".tr(),
-                                    style:arabicTxtStyle(),
+                                    style: arabicTxtStyle(),
                                     textAlign: TextAlign.center,
-                                  )
-                              )
-                          )  // No Record Found
-                              : Container(
-                              child: Center(
-                                  child: SpinKitChasingDots(
-                                    color: UtilColours.APP_BAR,
-                                    size: 50.0,
-                                  )
-                              )
-                          )
-                        ],
-                      )
-                  )
-                ),
-
-              ]
-          ),
-        )
-    );
+                                  ))) // No Record Found
+                            : Container(
+                                child: Center(
+                                    child: SpinKitChasingDots(
+                                color: UtilColours.APP_BAR,
+                                size: 50.0,
+                              )))
+                      ],
+                    ))),
+          ]),
+        ));
   }
 
-  Widget textsList(){
+  Widget textsList() {
     return Container(
-      // decoration: selectedListTileDec(colour: 0xffc8cae6),
-      width:300,
-      child:
-          Column (
-            children: [
-              for(final entry in records)
-                Column(
-                  key: ValueKey(entry),
-                  //set mainAxisSize to min to avoid items disappearing on reorder
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      decoration: selectedListTileDec(colour: 0xffc8cae6),
-                      child: ListTile(
+        // decoration: selectedListTileDec(colour: 0xffc8cae6),
+        width: 300,
+        child: Column(
+          children: [
+            for (final entry in records)
+              Column(
+                key: ValueKey(entry),
+                //set mainAxisSize to min to avoid items disappearing on reorder
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    decoration: selectedListTileDec(colour: 0xffc8cae6),
+                    child: ListTile(
                         // leading: Icon(Icons.menu),
-                        title:  Text(
+                        title: Text(
                           entry.name,
-                          style:arabicTxtStyle(paramBold: true, paramColour: Color(0xff363f68) ),
+                          style: arabicTxtStyle(
+                              paramBold: true, paramColour: Color(0xff363f68)),
                           textAlign: TextAlign.center,
                         ),
-                  onTap: () {
-                              if(entry.type == "RECORD"){
-                                print(entry);
-                                var classToCall = TextsBody(title: entry.name , body: entry.body, key: UniqueKey());
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => classToCall));
-                              }else{
-                                print(entry);
-                                innerNavigate(entry.name, entry.firebaseId);
-                              }
-                        }
-                      ),
-                    ),
-                    SizedBox(height: 10,)
-                  ],
-                )
+                        onTap: () {
+                          if (entry.type == "RECORD") {
+                            var classToCall = TextsBody(
+                                title: entry.name,
+                                body: entry.body,
+                                key: UniqueKey());
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => classToCall));
+                          } else {
+                            innerNavigate(entry.name, entry.firebaseId);
+                          }
+                        }),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  )
+                ],
+              )
+          ],
+        )
 
-            ],
-          )
-
-      // ListView.separated(
-      //   // scrollDirection: Axis.vertical,
-      //   shrinkWrap: true,
-      //   itemCount: records.length,
-      //   itemBuilder: (BuildContext context, int index){
-      //     var entry = records[index];
-      //     return ListTile(
-      //         title: Text(
-      //           'فوائد من كتاب التوحيد',
-      //           style:arabicTxtStyle(paramBold: true, paramColour: Color(0xff363f68) ),
-      //           textAlign: TextAlign.center,
-      //         ),
-      //         // subtitle:  Container(
-      //         //   child: Column(
-      //         //   crossAxisAlignment: CrossAxisAlignment.stretch,
-      //         //     children: <Widget>[
-      //         //       Container(child: Text("Page: ".toString(), style: arabicTxtStyle(paramSize: 18.0)),),
-      //         //     ])),
-      //         // trailing: new IconButton(icon: Icon(Icons.delete), onPressed: (){}),
-      //         onTap: () {
-      //           if(entry.type == "RECORD"){
-      //
-      //           }else{
-      //             print(entry);
-      //             innerNavigate(entry.name, entry.firebaseId);
-      //           }
-      //         }
-      //     );
-      //   }, separatorBuilder: (BuildContext context, int index) {
-      //   return Divider();
-      // },),
-    );
+        // ListView.separated(
+        //   // scrollDirection: Axis.vertical,
+        //   shrinkWrap: true,
+        //   itemCount: records.length,
+        //   itemBuilder: (BuildContext context, int index){
+        //     var entry = records[index];
+        //     return ListTile(
+        //         title: Text(
+        //           'فوائد من كتاب التوحيد',
+        //           style:arabicTxtStyle(paramBold: true, paramColour: Color(0xff363f68) ),
+        //           textAlign: TextAlign.center,
+        //         ),
+        //         // subtitle:  Container(
+        //         //   child: Column(
+        //         //   crossAxisAlignment: CrossAxisAlignment.stretch,
+        //         //     children: <Widget>[
+        //         //       Container(child: Text("Page: ".toString(), style: arabicTxtStyle(paramSize: 18.0)),),
+        //         //     ])),
+        //         // trailing: new IconButton(icon: Icon(Icons.delete), onPressed: (){}),
+        //         onTap: () {
+        //           if(entry.type == "RECORD"){
+        //
+        //           }else{
+        //             print(entry);
+        //             innerNavigate(entry.name, entry.firebaseId);
+        //           }
+        //         }
+        //     );
+        //   }, separatorBuilder: (BuildContext context, int index) {
+        //   return Divider();
+        // },),
+        );
   }
 }

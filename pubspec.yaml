@@ -1,7 +1,7 @@
 name: bestnation
 description: Best Nation
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -21,7 +21,7 @@ dependencies:
   font_awesome_flutter:         "^8.5.0"
   dio:                          "^3.0.10"
   path_provider:
-  flutter_pdfview:              "^1.0.4"
+  flutter_pdfview:              "^1.2.1"
   just_audio:                   "^0.6.13"
   share:                        "^0.6.5+4" # Share files with others
   flutter_inappwebview:         "^4.0.0+4" # Open webpage for live stream

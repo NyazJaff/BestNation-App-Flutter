@@ -1,8 +1,12 @@
 import 'package:bestnation/Helper/util.dart';
 import 'package:bestnation/utilities/layout_helper.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:just_audio/just_audio.dart';
+
+import 'mp3_player.dart';
 
 class LiveBroadcast extends StatefulWidget {
   @override
@@ -10,72 +14,86 @@ class LiveBroadcast extends StatefulWidget {
 }
 
 class _LiveBroadcastState extends State<LiveBroadcast> {
-
-  InAppWebViewController webView;
   String url = "";
-  double progress = 0;
+  String title = "";
+  ConcatenatingAudioSource _playlist;
+  List<AudioSource> mp3List = [];
+  bool isThereNetwork = false;
+  AudioPlayer _player = AudioPlayer();
 
   @override
   void initState() {
     super.initState();
+    _pullConfig();
+  }
+
+  _pullConfig() async {
+    isThereNetwork = await hasNetwork();
+    await Firebase.initializeApp();
+    Stream config = FirebaseFirestore.instance.collection('config').doc('LIVE_STREAM').snapshots();
+    config.listen((value) {
+      title = value.data()['title'];
+      url = value.data()['url'];
+      _init();
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _player.dispose();
+    super.dispose();
+  }
+
+  _init() async {
+      try {
+        print(url);
+        await _player.setUrl(url);
+        _player.play();
+      } catch (e) {
+        // catch load errors: 404, invalid url ...
+        print("An error occured when initialising mp3 player $e");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: double.infinity,
-      decoration: appBackgroundGradient(),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
+        height: double.infinity,
+        decoration: appBackgroundGradient(),
+        child: Scaffold(
           appBar: app_bar(context, 'broadcast'.tr()),
-          body: SafeArea(
-            child: Container(
-                child: Column(children: <Widget>[
-                  progress < 1.0
-                      ? Container(
-                        padding: EdgeInsets.all(10.0),
-                        child: LinearProgressIndicator(
-                            value: progress,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.green),),
-                      )
-                      : Container(),
-                  Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.all(2),
-                      decoration:
-                      BoxDecoration(border: Border.all(color: Colors.blueAccent)),
-                      child: InAppWebView(
-                        initialUrl: "http://node-16.zeno.fm/2mu5gr0gtv8uv?rj-ttl=5&rj-tok=AAABesEMYl0AY-_dZqS356torA",
-                        initialHeaders: {},
-                        initialOptions: InAppWebViewGroupOptions(
-                            crossPlatform: InAppWebViewOptions(
-                              debuggingEnabled: true,
-                            )
+          backgroundColor: Colors.transparent,
+          body: Stack(children: <Widget>[
+            Positioned.fill(
+                child: Align(
+                    alignment: Alignment.center,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
                         ),
-                        onWebViewCreated: (InAppWebViewController controller) {
-                          webView = controller;
-                        },
-                        onLoadStart: (InAppWebViewController controller, String url) {
-                          setState(() {
-                            this.url = url;
-                          });
-                        },
-                        onLoadStop: (InAppWebViewController controller, String url) async {
-                          setState(() {
-                            this.url = url;
-                          });
-                        },
-                        onProgressChanged: (InAppWebViewController controller, int progress) {
-                          setState(() {
-                            this.progress = progress / 100;
-                          });
-                        },
-                      ),
-                    ),
-                  ),
-                ])),
-          )
-      ),
-    );
+                        createLogoDisplay('logo.png'),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                        ),
+                        ControlButtons(_player, false),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                        ),
+                        isThereNetwork ? Container(
+                            decoration: valueBoxDecorationStyle, 
+                            padding: EdgeInsets.all(10),
+                            width: 250,
+                            child: Text(
+                                title,
+                                style: arabicTxtStyle(paramSize: 20.0),
+                                textAlign: TextAlign.justify
+                            )
+                        ) : SizedBox.shrink()
+                      ],
+                    ))),
+          ]),
+        ));
   }
 }

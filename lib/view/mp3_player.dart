@@ -8,7 +8,8 @@ import '../Helper/util.dart';
 class ControlButtons extends StatelessWidget {
   final AudioPlayer player;
 
-  ControlButtons(this.player);
+  final bool showSpeedButton;
+  ControlButtons(this.player, this.showSpeedButton);
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +80,7 @@ class ControlButtons extends StatelessWidget {
             onPressed: player.hasNext ? player.seekToNext : null,
           ),
         )),
-        StreamBuilder<double>(
+        showSpeedButton ? StreamBuilder<double>(
           stream: player.speedStream,
           builder: (context, snapshot) => IconButton(
             icon: Text("${snapshot.data?.toStringAsFixed(1)}x",
@@ -96,7 +97,7 @@ class ControlButtons extends StatelessWidget {
               );
             },
           ),
-        ),
+        ) : SizedBox.shrink(),
       ],
     );
   }
@@ -124,7 +125,9 @@ class _SeekBarState extends State<SeekBar> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Slider(
           min: 0.0,
@@ -146,21 +149,35 @@ class _SeekBarState extends State<SeekBar> {
             _dragValue = null;
           },
         ),
-        Positioned(
-          right: 16.0,
-          bottom: 0.0,
-          child: Text(
-              RegExp(r'((^0*[1-9]\d*:)?\d{2}:\d{2})\.\d+$')
-                  .firstMatch("$_remaining")
-                  ?.group(1) ??
-                  '$_remaining',
-              style: Theme.of(context).textTheme.caption),
-        ),
+        Container(
+          padding: EdgeInsets.only(bottom:5, left: 10, right: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                  "${_printDuration(widget.position)}",
+                  style: Theme.of(context).textTheme.caption),
+              Text(
+                  RegExp(r'((^0*[1-9]\d*:)?\d{2}:\d{2})\.\d+$')
+                      .firstMatch("$_remaining")
+                      ?.group(1) ??
+                      '$_remaining',
+                  style: Theme.of(context).textTheme.caption)
+            ],
+          ),
+        )
       ],
     );
   }
 
   Duration get _remaining => widget.duration - widget.position;
+
+  String _printDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    return "${twoDigits(duration.inHours)}:$twoDigitMinutes:$twoDigitSeconds";
+  }
 }
 
 _showSliderDialog({

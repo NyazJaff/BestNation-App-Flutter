@@ -164,3 +164,54 @@ Widget buildBackground(){
     ),
   );
 }
+
+Widget createLogoDisplay(image) {
+  return Container(
+    width: 200,
+    height: 130,
+    padding: EdgeInsets.all(10),
+    decoration: linearGradientBackground(radius: 10.0),
+    child: Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/brand/' + image),
+          fit: BoxFit.contain,
+        ),
+      ),
+    ),
+  );
+}
+
+final kHintTextStyle = TextStyle(
+  color: textAndIconHintColour,
+  fontFamily: 'OpenSans',
+);
+
+
+TextStyle kLabelStyle({fontSize : 14.0}){
+  return TextStyle(
+    fontSize: fontSize,
+    color: textAndIconColour,
+    fontWeight: FontWeight.bold,
+    fontFamily: 'OpenSans',
+  );
+}
+
+final valueBoxDecorationStyle = BoxDecoration(
+  color: Color(0xFFF6F6F6FF),
+  borderRadius: BorderRadius.circular(15.0),
+  boxShadow: [
+    BoxShadow(
+      color: Colors.black12,
+      blurRadius: 6.0,
+      offset: Offset(0, 2),
+    ),
+  ],
+);
+
+final valueHintBoxDecorationStyle = TextStyle(
+  color: textAndIconHintColour,
+  fontSize: 33,
+  fontWeight: FontWeight.bold,
+  fontFamily: 'OpenSans',
+);

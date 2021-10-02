@@ -12,8 +12,9 @@ class Epic {
   final String createdTime;
   final String type;
   final String category;
+  bool filePathExists;
 
-  Epic({ this.id, this.parentId, this.firebaseId, this.name, this.body = '', this.title, this.question, this.answer, this.mp3URL, this.pdfURL, this.createdTime, this.type, this.category});
+  Epic({ this.id, this.parentId, this.firebaseId, this.name, this.body = '', this.title, this.question, this.answer, this.mp3URL, this.pdfURL, this.createdTime, this.type, this.category, this.filePathExists = false});
 
   Map<String, dynamic> toMap() {
     return {
