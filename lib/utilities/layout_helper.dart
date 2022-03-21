@@ -1,6 +1,7 @@
 import 'package:bestnation/Helper/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'chasing_dots.dart';
 import 'dart:math' as math;
 
@@ -215,3 +216,29 @@ final valueHintBoxDecorationStyle = TextStyle(
   fontWeight: FontWeight.bold,
   fontFamily: 'OpenSans',
 );
+
+Widget jaffLogo(){
+  return Align(
+    alignment: Alignment(0.0, 0.98),
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(15.0),
+      child: Container(
+        width: 75,
+        height: 45,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/brand/dev N.Jaff.png'),
+          ),
+        ),
+        child: FlatButton(
+          padding: EdgeInsets.all(0.0),
+          onPressed: () async {
+            await InAppBrowser.openWithSystemBrowser(
+                url: "https://nyazjaff.co.uk");
+          },
+          child: null,
+        ),
+      ),
+    ),
+  );
+}

@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:bestnation/utilities/layout_helper.dart';
 
 import 'mp3_player.dart';
 
@@ -76,12 +77,14 @@ class _LiveBroadcastState extends State<LiveBroadcast> {
                         Padding(
                           padding: const EdgeInsets.all(10.0),
                         ),
-                        ControlButtons(_player, false),
+                        isThereNetwork
+                            ? ControlButtons(_player, false)
+                            :  Icon(Icons.wifi_off, color: Colors.grey, size: 40,),
                         Padding(
                           padding: const EdgeInsets.all(10.0),
                         ),
                         isThereNetwork && title != "" ? Container(
-                            decoration: valueBoxDecorationStyle, 
+                            decoration: valueBoxDecorationStyle,
                             padding: EdgeInsets.all(10),
                             width: 250,
                             child: Text(
@@ -89,7 +92,12 @@ class _LiveBroadcastState extends State<LiveBroadcast> {
                                 style: arabicTxtStyle(paramSize: 20.0),
                                 textAlign: TextAlign.justify
                             )
-                        ) : SizedBox.shrink()
+                        ) : SizedBox.shrink(),
+                        Expanded(
+                          child: Container(
+                              padding: EdgeInsets.only(bottom: 20),
+                              child: jaffLogo()),
+                        ),
                       ],
                     ))),
           ]),

@@ -100,31 +100,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget addPadding(context){
     return Padding(padding: EdgeInsets.only(top: utilWinHeightSize(context) > 700 ? utilWinHeightSize(context)  * 0.2 : utilWinHeightSize(context) *  0.04));
   }
-  Widget devNJaff(){
-    return Align(
-      alignment: Alignment(0.0, 0.98),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(15.0),
-        child: Container(
-          width: 75,
-          height: 45,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/brand/dev N.Jaff.png'),
-            ),
-          ),
-          child: FlatButton(
-            padding: EdgeInsets.all(0.0),
-            onPressed: () async {
-              await InAppBrowser.openWithSystemBrowser(
-                  url: "http://nyazjaff.co.uk");
-            },
-            child: null,
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget socialMediaLinks(which, url){
     return  Padding(
@@ -234,7 +209,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             addImage("assets/brand/home_verses.png", size: 320.0),
                             SizedBox(height: 20),
                             SizedBox(height:30),
-                            devNJaff(),
+                            jaffLogo(),
                             SizedBox(height:15),
                           ]
                       )
