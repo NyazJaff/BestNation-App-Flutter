@@ -156,7 +156,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
                     pageBookmarked = !pageBookmarked;
                   });
 
-                  Scaffold.of(cntx).showSnackBar(SnackBar(
+                  ScaffoldMessenger.of(cntx).showSnackBar(SnackBar(
                     content: Text(pageBookmarked? "bookmarked!".tr() : "removed_bookmark!".tr()),
                     duration: Duration(seconds: 1),
                   ));
@@ -296,7 +296,7 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver  {
                                 comment: commentTxt.text,
                                 type: DatabaseHelper.COMMENT));
 
-                            Scaffold.of(ctx).showSnackBar(SnackBar(
+                            ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
                               content: Text('saved'.tr() + commentTxt.text),
                               duration: Duration(seconds: 2),
                             ));

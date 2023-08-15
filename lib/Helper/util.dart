@@ -45,7 +45,7 @@ getCurrentOrientation(){
 }
 
 showToast(context, message){
-  Scaffold.of(context).showSnackBar(SnackBar(
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     content: Text(message),
     duration: Duration(seconds: 2),
   ));
@@ -70,7 +70,7 @@ localUrlPath(url) async {
   return "$dir/" + url.substring(url.lastIndexOf("/") + 1);
 }
 
-Future<File> doesUrlFileExits(url) async{
+Future<File?> doesUrlFileExits(url) async{
   String path = await localUrlPath(url);
   if(File(path).existsSync() == true){
     return File(path);

@@ -104,8 +104,8 @@ class _BookmarksAndCommentsState extends State<BookmarksAndComments> {
                 )
             );
           } else {
-            return bookmarks.data.length > 0 ? ListView.builder(
-                itemCount: bookmarks.data.length,
+            return bookmarks.data!.length > 0 ? ListView.builder(
+                itemCount: bookmarks.data?.length,
                 itemBuilder: (BuildContext context, int index){
                   var bookmark = bookmarks.data[index];
                   return Dismissible(

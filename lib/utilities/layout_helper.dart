@@ -13,7 +13,7 @@ final appBackgroundFirst =    Color(0xFFc4c4e6);
 final appBackgroundSecond =   Color(0xFFededed);
 
 
-TextStyle arabicTxtStyle({paramColour: UtilColours.APP_BAR, double paramSize: 20.0, paramBold: false}){
+TextStyle arabicTxtStyle({paramColour= UtilColours.APP_BAR, double paramSize= 20.0, paramBold= false}){
   return TextStyle(
       fontSize: paramSize,
       color: paramColour,
@@ -25,7 +25,7 @@ TextStyle arabicTxtStyle({paramColour: UtilColours.APP_BAR, double paramSize: 20
   );
 }
 
-Widget addImage(path, {size: 200.0}){
+Widget addImage(path, {size= 200.0}){
   return  Container(
       width: size,
       child:
@@ -63,7 +63,7 @@ Widget withRTL(widget){
   );
 }
 
-Widget displayLoading({size: 50.0}){
+Widget displayLoading({size= 50.0}){
   return Center(
       child: SpinKitChasingDots(
         color: UtilColours.APP_BAR,
@@ -98,13 +98,13 @@ Widget emptyAppBar(){
   return PreferredSize(
       preferredSize: Size.fromHeight(0.0), // here the desired height
       child: AppBar(
-        brightness: Brightness.light,
+        // brightness: Brightness.light,
         backgroundColor: logoYellow,
       )
   );
 }
 
-BoxDecoration linearGradientBackground({radius: 100.0}){
+BoxDecoration linearGradientBackground({radius= 100.0}){
   return BoxDecoration(
     boxShadow: [
       BoxShadow(
@@ -134,7 +134,7 @@ BoxDecoration linearGradientBackground({radius: 100.0}){
   );
 }
 
-BoxDecoration selectedListTileDec({colour: 0xffe0e0ef}) {
+BoxDecoration selectedListTileDec({colour= 0xffe0e0ef}) {
   return BoxDecoration(
     gradient: LinearGradient(
         colors: [Color(colour)],
@@ -189,7 +189,7 @@ final kHintTextStyle = TextStyle(
 );
 
 
-TextStyle kLabelStyle({fontSize : 14.0}){
+TextStyle kLabelStyle({fontSize= 14.0}){
   return TextStyle(
     fontSize: fontSize,
     color: textAndIconColour,
@@ -230,11 +230,13 @@ Widget jaffLogo(){
             image: AssetImage('assets/brand/dev N.Jaff.png'),
           ),
         ),
-        child: FlatButton(
-          padding: EdgeInsets.all(0.0),
+        child: OutlinedButton(
+          style: OutlinedButton.styleFrom(
+            padding: EdgeInsets.all(0),
+          ),
           onPressed: () async {
             await InAppBrowser.openWithSystemBrowser(
-                url: "https://nyazjaff.co.uk");
+                url: Uri.parse("https://nyazjaff.co.uk"));
           },
           child: null,
         ),

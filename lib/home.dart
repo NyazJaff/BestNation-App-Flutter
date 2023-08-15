@@ -114,11 +114,13 @@ class _MyHomePageState extends State<MyHomePage> {
               image: AssetImage('assets/brand/$which.png'),
             ),
           ),
-          child: FlatButton(
-            padding: EdgeInsets.all(0.0),
+          child: OutlinedButton(
+            style: OutlinedButton.styleFrom(
+              padding: EdgeInsets.all(0.0),
+            ),
             onPressed: () async {
               await InAppBrowser.openWithSystemBrowser(
-                  url: url);
+                  url: Uri.parse(url));
             },
             child: null,
           ),
