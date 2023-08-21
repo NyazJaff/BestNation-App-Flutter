@@ -6,16 +6,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:bestnation/utilities/layout_helper.dart';
 import 'package:bestnation/utilities/chasing_dots.dart';
-import '../Helper/db_helper.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:get/get.dart';
 
 class Texts extends StatefulWidget {
   Texts({
-    Key key,
-    this.title,
-    this.parentId,
-    this.classType,
-  }) : super(key: key);
+    super.key,
+    this.title = "",
+    required this.parentId,
+    required this.classType,
+  });
 
   final String title;
   final String parentId;
@@ -26,7 +25,6 @@ class Texts extends StatefulWidget {
 }
 
 class _TextsState extends State<Texts> {
-  var db = new DatabaseHelper();
   List<Epic> records = [];
   bool loading = true;
   TextEditingController nameSearch = TextEditingController();
@@ -34,47 +32,11 @@ class _TextsState extends State<Texts> {
   @override
   void initState() {
     super.initState();
-    pullDataFromNetwork();
   }
 
   @override
   void dispose() {
     super.dispose();
-  }
-
-  pullDataFromNetwork() async {
-    await Firebase.initializeApp();
-    switch (widget.classType) {
-      case DatabaseHelper.TEXTS:
-        await _pullTexts();
-        break;
-    }
-
-    setState(() {});
-  }
-
-  _pullTexts() async {
-    QuerySnapshot document = await FirebaseFirestore.instance
-        .collection("texts")
-        .where('parentId', isEqualTo: widget.parentId)
-        .orderBy('order')
-        .get();
-
-    formatFirebaseDocuments(document);
-    return records;
-  }
-
-  formatFirebaseDocuments(document) {
-    records = [];
-    document.docs.forEach((document) async {
-      Epic epic = db.formatEpicForSave(document,
-          widget.classType); // eg, classType = DatabaseHelper.LECTURES
-      // await db.saveEpic(epic);
-      records.add(epic);
-    });
-    // records.sort((a, b) => a.firebaseId.compareTo(b.firebaseId)); // Sort Records
-    loading = false;
-    return records;
   }
 
   innerNavigate(title, firebaseId) {
@@ -134,7 +96,7 @@ class _TextsState extends State<Texts> {
                                 : Container(
                                     child: Center(
                                         child: Text(
-                                    "no_records_currently_added!".tr(),
+                                    "no_records_currently_added!".tr,
                                     style: arabicTxtStyle(),
                                     textAlign: TextAlign.center,
                                   ))) // No Record Found

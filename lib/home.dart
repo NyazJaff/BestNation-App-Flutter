@@ -1,8 +1,10 @@
 import 'package:bestnation/utilities/layout_helper.dart';
+import 'package:bestnation/view/lectures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-
+import 'package:get/get.dart';
+import 'Helper/db_helper.dart';
 import 'Helper/util.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -39,13 +41,13 @@ class _MyHomePageState extends State<MyHomePage> {
     );
 
   }
-  Widget createMainButton(text, icon, navigate){
+  Widget createMainButton(text, icon, path, arguments){
     return Container(
       width: 280,
       height:70,
       child: GestureDetector(
         onTap: () => {
-          Navigator.pushNamed(context, navigate)
+          Get.toNamed(path, arguments: arguments)
         },
         child: Stack(
           children: [
@@ -178,10 +180,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                   child: Container(
                                     child: Column(
                                       children: [
-                                        createMainButton('العلماء وطلاب العلم', 'person_icon', '/lectures'),
-                                        createMainButton('الفوائد المنتقاة', 'text_icon', '/texts'),
-                                        createMainButton('الإذاعة', 'book_with_pen_icon', '/live_broadcast'),
-                                        createMainButton('الكتب', 'book_icon', '/books')
+                                        createMainButton('العلماء وطلاب العلم', 'person_icon', "/lectures", {'title':'lectures'.tr, 'parentId': '0', 'classType': DatabaseHelper.LECTURES}),
+                                        // createMainButton('الفوائد المنتقاة', 'text_icon', '/texts'),
+                                        // createMainButton('الإذاعة', 'book_with_pen_icon', '/live_broadcast'),
+                                        // createMainButton('الكتب', 'book_icon', '/books')
                                       ],
                                     ),
                                   )

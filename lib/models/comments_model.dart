@@ -5,5 +5,5 @@ class Comment {
   String comment;
   String bookName;
 
-  Comment ({ this.page, this.book, this.comment, this.bookName});
+  Comment ({ this.page = 1, this.book = 1, this.comment = "", this.bookName = ""});
 }

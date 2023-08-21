@@ -1,5 +1,4 @@
-// not used anymore
-{
+final Map<String, String> arSA = {
   ""        : "",
   "lectures": "العلماء وطلاب العلم",
   "books": "الكتب",
@@ -24,8 +23,4 @@
   "adjust_speed": "ضبط السرعة",
   "adjust_volume": "ضبط مستوى الصوت",
   "broadcast": "الإذاعة",
-  "about_shikh": "ترجمة الشيخ",
-  "speech": "خطاب",
-  "no_records_currently_added!": "عدم وجود سجلات وأضاف في الوقت الحالي!",
-  "texts": "الفوائد المنتقاة"
-}
+};

@@ -5,7 +5,7 @@ class Book {
   final String imageURL;
   final String pdfURL;
 
-  Book({ this.id, this.description, this.name, this.imageURL, this.pdfURL});
+  Book({ this.id = 1, this.description = "", this.name = "", this.imageURL = "", this.pdfURL = ""});
 
   Map<String, dynamic> toMap() {
     return {

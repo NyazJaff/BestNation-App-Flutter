@@ -18,83 +18,36 @@ class DatabaseHelper {
   static const String TEXTS = "TEXT"; //currently not saving to db
   static const String SPEECH = "SPEECH"; //currently not saving to db
 
-  static final DatabaseHelper _instance = new DatabaseHelper.internal();
-  factory DatabaseHelper()=>_instance;
-  static Database _db;
-
   Future<Database>get db async{
-    if(_db != null){
-      return _db;
-    }
-    _db = await initDb();
-    return _db;
-  }
-  DatabaseHelper.internal();
-
-  initDb() async {
-    Directory documentDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentDirectory.path, "abdullahAlSaad.db");
-    var ourDb = await openDatabase(path, version: 1, onCreate: _onCreate);
-    return ourDb;
+  return openDatabase(
+      // Set the path to the database. Note: Using the `join` function from the
+      // `path` package is best practice to ensure the path is correctly
+      // constructed for each platform.
+      join(await getDatabasesPath(), 'doggie_database.db'),
+    );
   }
 
-  void _onCreate(Database db, int version) async {
-    await db.execute("CREATE TABLE Book ("
-        "id INTEGER PRIMARY KEY, "
-        "name TEXT, "
-        "description TEXT, "
-        "pdfURL TEXT, "
-        "imageURL TEXT"
-        ")");
-    print("Table Book is created");
-
-    await db.execute("CREATE TABLE CommentAndBookmark ("
-        "id INTEGER PRIMARY KEY, "
-        "bookId INTEGER, "
-        "pageIndex INTEGER, "
-        "comment TEXT, "
-        "type TEXT, "
-        "CONSTRAINT kf_book "
-        "FOREIGN KEY (bookId) "
-        "REFERENCES Book(id)"
-        ")");
-    print("Table CommentAndBookmark is created");
-
-    await db.execute("CREATE TABLE Epic ("
-        "id INTEGER PRIMARY KEY, "
-        "parentId INTEGER, "
-        "firebaseId INTEGER, "
-        "name TEXT, "
-        "title TEXT, "
-        "body TEXT, "
-        "question TEXT, "
-        "answer TEXT, "
-        "mp3URL TEXT, "
-        "pdfURL TEXT, "
-        "createdTime TEXT, "
-        "type TEXT, "
-        "category TEXT "
-        ")");
-    print("Table Epic is created");
-  }
-
-  Epic formatEpicForSave(DocumentSnapshot documents, String category) {
-    var document = documents.data();
+  Epic formatEpicForSave(DocumentSnapshot doc, String category) {
     return new Epic(
-      parentId: document['parentId'] != null ? document['parentId'] : "",
-      firebaseId: documents.id != null ? documents.id : "",
-      name: document['name'] != null ? document['name'] : document['tile'] != null ?  document['tile'] : '',
-      body: document['body'] != null ? document['body'] : '',
-      title: document['tile'] != null ? document['tile'] : '',
-      question: document['question'] != null ? document['question'] : "",
-      answer: document['answer'] != null ? document['answer'] : "",
-      createdTime: document['createdTime'] != null ? document['createdTime'] : "",
-      mp3URL: document['mp3URL'] != null ? document['mp3URL'] : "",
-      pdfURL: document['pdfURL'] != null ? document['pdfURL'] : "",
-      type: document['type'] != null ? document['type'] : "",
+      firebaseId: doc.id != null ? doc.id : "",
+      parentId: fireBaseDoc(doc, "parent_id"),
+      name: doc.data().toString().contains('name') ? doc.get('name') : doc.data().toString().contains('title') ? doc.get('title') : "",
+      body: fireBaseDoc(doc, "body"),
+      title: fireBaseDoc(doc, "title"),
+      question: fireBaseDoc(doc, "question"),
+      answer: fireBaseDoc(doc, "answer"),
+      createdTime: fireBaseDoc(doc, "createdTime"),
+      mp3URL: fireBaseDoc(doc, "mp3URL"),
+      pdfURL: fireBaseDoc(doc, "pdfURL"),
+      type: fireBaseDoc(doc, "type"),
       category: category,
     );
   }
+
+  fireBaseDoc(doc, key) {
+    return doc.data().toString().contains(key) ? doc.get(key) : "";
+  }
+
 
   Epic formatEpicForReturn(Map<String, dynamic> map){
     return new Epic(
@@ -113,30 +66,12 @@ class DatabaseHelper {
     );
   }
 
-  saveEpic(Epic epic) async {
-    var dbClient = await db;
-    await dbClient.insert(("Epic"), epic.toMap());
-  }
-
-  largestEpicFirebaseId(category) async {
-    var dbClient = await db;
-    List<Map> result =  await dbClient.rawQuery(
-        "SELECT MAX(firebaseId) as firebaseId from Epic where category=? ", [category]
-    );
-    int largestId = 0;
-    result.forEach((element) {
-      if(element['firebaseId'] != null){
-        largestId = element['firebaseId'];
-      }
-    });
-    return largestId;
-  }
 
   Future<List<Epic>> getQandA(int parentId){
     return epics(extraQuery:"WHERE category = '$QUESTION_AND_ANSWER' AND parentId = $parentId ");
   }
 
-  Future<List<Epic>> epics({String extraQuery : ""}) async {
+  Future<List<Epic>> epics({String extraQuery = ""}) async {
     // Get a reference to the database.
     var dbClient = await db;
     try {
@@ -159,12 +94,12 @@ class DatabaseHelper {
     return res;
   }
 
-  Future<Book> bookByPdfUrl(pdfURL) async {
-    var dbClient = await db;
-
-    List<Map> result =  await dbClient.rawQuery("SELECT * from Book where pdfURL = ? limit 1", [pdfURL]);
-    return formatBookForReturn(result[0]);
-  }
+  // Future<Book> bookByPdfUrl(pdfURL) async {
+  //   var dbClient = await db;
+  //
+  //   List<Map> result =  await dbClient.rawQuery("SELECT * from Book where pdfURL = ? limit 1", [pdfURL]);
+  //   return formatBookForReturn(result[0]);
+  // }
 
   largestBookId() async {
     var dbClient = await db;

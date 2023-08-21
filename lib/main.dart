@@ -1,56 +1,63 @@
-// import 'package:bestnation/view/lectures.dart';
-// import 'package:bestnation/view/live_broadcast.dart';
-// import 'package:bestnation/view/texts.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:bestnation/controller/lecture_controller.dart';
+import 'package:bestnation/utilities/app_translation.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 
-// import 'Helper/db_helper.dart';
-// import 'books/list_books.dart';
+// Pages
+import 'Helper/db_helper.dart';
+import 'controller/audio_player_controller.dart';
 import 'home.dart';
+import 'view/lectures.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
+  await Firebase.initializeApp;
 
-  runApp(EasyLocalization (
-    child: new MyApp(),
-    supportedLocales: [
-      Locale('en', 'UK'),
-      Locale('ar', 'SA'),
-      Locale('ar', 'KU')
-    ],
-    path: 'assets/langs',
-    fallbackLocale: Locale('ar', 'SA'),
-    startLocale: Locale('ar', 'SA'),
-  ));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Get.create(() => LectureController()); // This so Lectures can call itself
+    final AudioPlayerController player = Get.put(AudioPlayerController());
 
-    return MaterialApp(
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
+    return GetMaterialApp(
+      translations: AppTranslation(),
+      locale: Locale('ar', 'SA'),
+      fallbackLocale: const Locale('ar', 'SA'),
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
-      routes: {
-        '/': (context) => MyHomePage(),
-        // '/books': (context) => ListBooks(title:'books'.tr(), parentId: '0',),
-        // '/texts': (context) => Texts(title:'texts'.tr(), parentId: '0', classType: DatabaseHelper.TEXTS),
-        // '/live_broadcast': (context) => LiveBroadcast(),
-        // '/lectures': (context) => Lectures(title:'lectures'.tr(), parentId: '0', classType: DatabaseHelper.LECTURES),
-        // '/speeches': (context) => Lectures(title:'speech'.tr(), parentId: '0', classType: DatabaseHelper.SPEECH),
-      },
+      getPages: [
+        GetPage(name: '/', page: () => MyHomePage()),
+        GetPage(name: "/lectures", page: () => Lectures()),
+      ],
+      // routes: {
+      //   '/': (context) => MyHomePage(),
+      //   // '/books': (context) => ListBooks(title:'books'.tr(), parentId: '0',),
+      //   // '/texts': (context) => Texts(title:'texts'.tr(), parentId: '0', classType: DatabaseHelper.TEXTS),
+      //   // '/live_broadcast': (context) => LiveBroadcast(),
+      //   '/lectures': (context) => Lectures(title:'lectures'.tr, parentId: '0', classType: DatabaseHelper.LECTURES),
+      //   // '/speeches': (context) => Lectures(title:'speech'.tr(), parentId: '0', classType: DatabaseHelper.SPEECH),
+      // },
+
+      // localizationsDelegates: [
+      //   GlobalMaterialLocalizations.delegate,
+      //   GlobalWidgetsLocalizations.delegate,
+      //   EasyLocalization.of(context)!.delegate,
+      //   GlobalCupertinoLocalizations.delegate,
+      //   DefaultCupertinoLocalizations.delegate
+      // ],
+      // supportedLocales: context.supportedLocales,
 
       theme: ThemeData(
         textTheme: Theme.of(context).textTheme.apply(
           fontFamily:
-          locale.toString() == 'ar_SA' ? 'Tajawal' :
-          locale.toString() == 'ar_KU' ? 'Kurdi' :
+          Get.locale.toString() == 'ar_SA' ? 'Tajawal' :
+          Get.locale.toString()  == 'ar_KU' ? 'Kurdi' :
           'Tajawal',
         ),
       ),

@@ -1,17 +1,14 @@
 import 'package:bestnation/Helper/util.dart';
 import 'package:flutter/material.dart';
 import 'package:bestnation/utilities/layout_helper.dart';
-import '../Helper/db_helper.dart';
 import 'package:flutter/services.dart';
-import 'package:share/share.dart';
-
 
 class TextsBody extends StatefulWidget {
   TextsBody({
-    Key key,
-    this.title,
-    this.body,
-  }) : super(key: key);
+    super.key,
+    required this.title,
+    required this.body,
+  });
 
   final String title;
   final String body;
@@ -20,7 +17,6 @@ class TextsBody extends StatefulWidget {
 }
 
 class _TextsBodyState extends State<TextsBody> {
-  var db = new DatabaseHelper();
 
   bool loading = true;
   @override
@@ -113,7 +109,7 @@ class _TextsBodyState extends State<TextsBody> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               TextButton.icon(
-                                  onPressed: () => {Share.share(widget.body)},
+                                  onPressed: () => {},
                                   icon: Icon(Icons.share, color: UtilColours.APP_BAR,),
                                   label: Text('مشاركة',  style: arabicTxtStyle())),
                               TextButton.icon(

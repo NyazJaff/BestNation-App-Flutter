@@ -9,24 +9,29 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-#  cupertino_icons: ^1.0.0
+  #  cupertino_icons: ^1.0.0
 
-#  firebase_core:                "^1.0.0"
-#  cloud_firestore:              "^1.0.0"
-#  firebase_analytics:           "^7.1.0"
-
-  easy_localization:            "^3.0.2"   # Localise app lang
+  firebase_core:                "^2.15.0"
+  cloud_firestore:              "^4.8.4"
+  firebase_analytics:           "^10.4.4"
+  get:                          "^4.6.5"
+  permission_handler:           "^10.4.3"
+#  easy_localization:            "^3.0.2"   # Localise app lang
   flutter_staggered_animations: "^1.1.1" # Display grid with animation
 #  percent_indicator:            "^3.0.1"
 #  font_awesome_flutter:         "^9.0.0"
-#  dio:                          "^4.0.0"
+  dio:                          "^4.0.0"
   path_provider:                 "^2.1.0"
 #  flutter_pdfview:              "^1.2.1"
-#  just_audio:                   "^0.7.0"
+  just_audio:                   "^0.9.34"
 #  share:                        "^2.0.0" # Share files with others
   flutter_inappwebview:          "^5.7.2+3" # Open webpage for live stream
 #  url_launcher:                 "^6.0.0"
-#  sqflite:                      "^2.0.0"
+  sqflite:                      "^2.3.0"
+  flutter_xlider:               "^3.5.0"
+  font_awesome_flutter:         "^10.5.0"
+  progress_state_button:        "^1.0.4"
+
 
 dev_dependencies:
   flutter_test:
@@ -43,14 +48,7 @@ flutter_icons:
   android: true
   ios: true
 
-
 flutter:
-  uses-material-design: true
-
-  assets:
-    - assets/brand/
-    - assets/langs/
-
   fonts:
     - family: Tajawal
       fonts:
@@ -63,4 +61,12 @@ flutter:
       fonts:
         - asset: assets/fonts/uthman_taha_naskh/Uthman-Taha-Naskh-Regular.ttf
         - asset: assets/fonts/uthman_taha_naskh/Uthman-Taha-Naskh-Bold.ttf
+
+  uses-material-design: true
+
+  assets:
+    - assets/brand/
+    - assets/langs/
+
+
 

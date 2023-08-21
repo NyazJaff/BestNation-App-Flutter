@@ -7,7 +7,7 @@ class CommentAndBookmark {
   final String comment;
   final String type;
 
-  CommentAndBookmark({ this.id, this.bookId, this.pageIndex, this.comment, this.type});
+  CommentAndBookmark({ this.id = 1, this.bookId = 1, this.pageIndex = 1, this.comment = "", this.type = ""});
 
   Map<String, dynamic> toMap() {
     return {
