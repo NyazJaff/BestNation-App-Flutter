@@ -1,3 +1,4 @@
+import 'package:bestnation/controller/flat_download_controller.dart';
 import 'package:bestnation/controller/lecture_controller.dart';
 import 'package:bestnation/utilities/app_translation.dart';
 import 'package:firebase_core/firebase_core.dart';

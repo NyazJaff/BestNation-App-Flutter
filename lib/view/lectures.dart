@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import '../Helper/db_helper.dart';
 import '../controller/audio_player_controller.dart';
 import '../utilities/chasing_dots.dart';
+import 'components/flat_downlod.dart';
 
 class Lectures extends StatefulWidget {
   const Lectures({super.key});
@@ -93,7 +94,7 @@ class _LecturesState extends State<Lectures> {
   Widget displayEachEntry(entry, index) {
     return Obx(() => Container(
           margin: const EdgeInsets.only(left: 10.0, right: 10.0),
-          decoration: playerController.currentIndex == index
+          decoration: playerController.currentIndex == index && entry.type == "RECORD"
               ? selectedListTileDec()
               : null,
           child: ListTile(
@@ -116,6 +117,7 @@ class _LecturesState extends State<Lectures> {
                   ? Row(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
+                        FlatDownload(tag: entry.mp3URL),
                         // FlatFileDownloader(fileURL: entry.mp3URL)
                       ],
                     )
