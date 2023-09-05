@@ -2,10 +2,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-
-import '../Helper/util.dart';
 import '../controller/audio_player_controller.dart';
+import '../Helper/util.dart';
 import '../utilities/layout_helper.dart';
+import 'dart:math' as math;
 
 class AudioPlayer extends StatefulWidget {
   final List<AudioSource> audioList;
@@ -51,20 +51,22 @@ class _AudioPlayerState extends State<AudioPlayer> {
                 ? IconButton(
                     icon: const Icon(FontAwesomeIcons.pause),
                     iconSize: 40,
-                    tooltip: 'Pause',
+                    tooltip: 'pause'.tr,
                     onPressed: () {
                       playerController.player.pause();
+                      playerController.showBottomPlayer.value = false;
                       playerController.playing.value = false;
                     },
                   ) // Pause
                 : IconButton(
                     icon: const Icon(FontAwesomeIcons.play),
                     iconSize: 40,
-                    tooltip: 'Play',
+                    tooltip: 'play'.tr,
                     onPressed: () {
                       playerController.player.play();
+                      playerController.showBottomPlayer.value = true;
                     },
-                  ),
+                  ), // Play
         key: ValueKey<int>(playerController.loading.value ? 1 : 2),
       ),
     );
@@ -77,7 +79,7 @@ class _AudioPlayerState extends State<AudioPlayer> {
           playerController.hasNext() && playerController.loading.value == false
               ? Colors.black
               : Colors.grey,
-      tooltip: 'Next',
+      tooltip: 'next'.tr,
       onPressed: () {
         playerController.player.seekToNext();
       },
@@ -89,7 +91,7 @@ class _AudioPlayerState extends State<AudioPlayer> {
       icon: const Icon(FontAwesomeIcons.forwardStep),
       color:
           playerController.currentIndex.value == 0 ? Colors.grey : Colors.black,
-      tooltip: 'Previous',
+      tooltip: 'previous'.tr,
       onPressed: () {
         playerController.player.seekToPrevious();
       },
@@ -98,22 +100,22 @@ class _AudioPlayerState extends State<AudioPlayer> {
 
   Widget controlButtons() {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      previousButton(), // Previous
+      // previousButton(),
+      adjustSpeed(),
+      replay(),
+      move10SecondsBack(),
       playPauseButton(),
-      nextButton(), // N
-      adjustSpeed() // ext// Faster
+      // nextButton(),
+      move10SecondsAhead(),
+      // share(),
     ]);
   }
 
   Widget adjustSpeed() {
-
     return IconButton(
-      icon: const Icon(FontAwesomeIcons.gauge),
-      color:
-      playerController.hasNext() && playerController.loading.value == false
-          ? Colors.black
-          : Colors.grey,
-      tooltip: 'Next',
+      icon: const Icon(Icons.slow_motion_video, size: 35,),
+      color: Colors.black,
+      tooltip: 'adjust_speed'.tr,
       onPressed: () => showDialog<String>(
         context: context,
         builder: (BuildContext context) => Dialog(
@@ -131,11 +133,10 @@ class _AudioPlayerState extends State<AudioPlayer> {
                           fontWeight: FontWeight.bold,
                           fontSize: 24.0)),
                   SizedBox(height: 15),
-                  Text('1.5',
+                  Obx(() => Text(playerController.speed.value.toString(),
                       style: TextStyle(
-                          fontFamily: 'Fixed',
                           fontWeight: FontWeight.bold,
-                          fontSize: 24.0)),
+                          fontSize: 24.0))),
                   SliderTheme(
                     data: SliderTheme.of(context).copyWith(
                       valueIndicatorColor: Colors.blue, // This is what you are asking for
@@ -148,15 +149,15 @@ class _AudioPlayerState extends State<AudioPlayer> {
                       // overlayShape:
                       // RoundSliderOverlayShape(overlayRadius: 20.0),
                     ),
-                    child: Slider(
-                      divisions: 10,
-                      min: 0.5,
-                      max: 1.5,
-                      value:  1.0,
-                      onChanged: (seconds) {
-
-                      },
-                    ),
+                    child: Obx(()=> Slider(
+                        min: 0.5,
+                        max: 1.5,
+                        divisions: 10,
+                        value: playerController.speed.value,
+                        onChanged:(speed){
+                          playerController.player.setSpeed(speed);
+                        }
+                    ),)
                   ),
                   SizedBox(height: 15),
                 ],
@@ -165,6 +166,53 @@ class _AudioPlayerState extends State<AudioPlayer> {
           ),
         ),
       ),
+    );
+  }
+
+  // Widget share(){
+  //   return IconButton(
+  //     icon: const Icon(Icons.share, size: 25),
+  //     color: Colors.black,
+  //     onPressed: () {
+  //       Share.share(shareTextFormatter(entry.name + "\n\n\n" + entry.mp3URL))
+  //     },
+  //   );
+  // }
+
+  Widget replay(){
+    return IconButton(
+      icon: Icon(
+          playerController.loopMode.value == LoopMode.one ? Icons.repeat_on : Icons.repeat
+          , size: 35),
+      color: Colors.black,
+      onPressed: () {
+        if(playerController.loopMode.value == LoopMode.one){
+          playerController.loopMode.value = LoopMode.all;
+        }else{
+          playerController.loopMode.value = LoopMode.one;
+        }
+        playerController.player.setLoopMode(playerController.loopMode.value);
+      },
+    );
+  }
+
+  Widget move10SecondsBack(){
+    return IconButton(
+      icon: Icon(Icons.forward_10, size: 35, ),
+      color: Colors.black,
+      onPressed: () {
+        playerController.player.seek(Duration(seconds:  playerController.player.position.inSeconds - 10));
+      },
+    );
+  }
+
+  Widget move10SecondsAhead(){
+    return IconButton(
+      icon: const Icon(Icons.replay_10, size: 35),
+      color: Colors.black,
+      onPressed: () {
+        playerController.player.seek(Duration(seconds:  playerController.player.position.inSeconds + 10));
+      },
     );
   }
 
@@ -208,9 +256,15 @@ class _AudioPlayerState extends State<AudioPlayer> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(playerController
-              .labelSecondsToMinutes(playerController.duration.value.toInt())),
+              .labelSecondsToMinutes(playerController.duration.value.toInt()),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18.0)),
           Text(playerController
-              .labelSecondsToMinutes(playerController.position.value.toInt())),
+              .labelSecondsToMinutes(playerController.position.value.toInt()),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18.0)),
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:bestnation/utilities/layout_helper.dart';
+import 'package:bestnation/view/bottom_audio_player_panel.dart';
 import 'package:bestnation/view/lectures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -102,7 +103,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget addPadding(context){
     return Padding(padding: EdgeInsets.only(top: utilWinHeightSize(context) > 700 ? utilWinHeightSize(context)  * 0.2 : utilWinHeightSize(context) *  0.04));
   }
-
   Widget socialMediaLinks(which, url){
     return  Padding(
       padding: EdgeInsets.all(6.0),
@@ -130,7 +130,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -211,10 +210,9 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                             SizedBox(height: 10),
                             addImage("assets/brand/home_verses.png", size: 320.0),
-                            SizedBox(height: 20),
-                            SizedBox(height:30),
+                            SizedBox(height: 50),
+                            BottomAudioPlayerPanel(),
                             jaffLogo(),
-                            SizedBox(height:15),
                           ]
                       )
                   ),

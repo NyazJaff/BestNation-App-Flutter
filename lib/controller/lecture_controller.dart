@@ -57,7 +57,6 @@ class LectureController extends GetxController {
   _createPlayList() async {
     String dir = await getSystemPath();
     if (displayPlayer.value == true) {
-
       for (final e in this.records) {
         if (e.filePathExists) {
           String savedPath =

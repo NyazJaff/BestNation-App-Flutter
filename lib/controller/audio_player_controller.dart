@@ -1,4 +1,5 @@
 import 'package:bestnation/controller/lecture_controller.dart';
+import 'package:bestnation/utilities/layout_helper.dart';
 import 'package:just_audio/just_audio.dart';
 
 import 'package:get/get.dart';
@@ -7,13 +8,14 @@ import 'package:permission_handler/permission_handler.dart';
 class AudioPlayerController extends GetxController {
   AudioPlayer player = AudioPlayer();
   RxBool playing = false.obs;
+  RxBool showBottomPlayer = false.obs;
+  RxBool loading = true.obs;
   RxInt currentIndex = 0.obs;
-  RxString speed = "0".obs;
+  RxDouble speed = 1.0.obs;
+  var loopMode = LoopMode.all.obs;
   var duration = 0.0.obs;
   var position = 0.0.obs;
-  var state = "".obs;
-  RxBool loading = true.obs;
-
+  var title = "";
 
   @override
   void onReady() {
@@ -37,14 +39,13 @@ class AudioPlayerController extends GetxController {
       duration.value = durationStream!.inSeconds.toDouble();
     });
 
+    player.speedStream.listen((event) {
+      speed.value = event;
+    });
+
     player.positionStream.listen((positionStream) {
       position.value = positionStream.inSeconds.toDouble();
     });
-
-    player.speedStream.listen((speedStream) {
-      speed.value = speedStream.toString();
-    });
-
 
     player.playingStream.listen((playingStream) {
       playing.value = playingStream;

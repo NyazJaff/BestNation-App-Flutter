@@ -2,6 +2,7 @@ import 'package:bestnation/Helper/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:get/get.dart';
 import 'chasing_dots.dart';
 import 'dart:math' as math;
 
@@ -13,6 +14,16 @@ final logoYellow =            Color(0xFFFFCA0A);
 
 final appBackgroundFirst =    Color(0xFFc4c4e6);
 final appBackgroundSecond =   Color(0xFFededed);
+
+
+String translateNumbers(number){
+  String trNumber  = '';
+  number.runes.forEach((c) {
+    trNumber += new String.fromCharCode(c).tr;
+  });
+  return trNumber;
+}
+
 
 
 TextStyle arabicTxtStyle({paramColour= UtilColours.APP_BAR, double paramSize= 20.0, paramBold= false}){

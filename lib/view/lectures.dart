@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import '../Helper/db_helper.dart';
 import '../controller/audio_player_controller.dart';
 import '../utilities/chasing_dots.dart';
+import 'bottom_audio_player_panel.dart';
 import 'components/flat_downlod.dart';
 
 class Lectures extends StatefulWidget {
@@ -31,6 +32,10 @@ class _LecturesState extends State<Lectures> {
 
   @override
   Widget build(BuildContext context) {
+    if(playerController.playing.value == false){
+      playerController.title = lectureController.args['title'];
+    }
+
     return Container(
         height: double.infinity,
         decoration: appBackgroundGradient(),
@@ -62,8 +67,6 @@ class _LecturesState extends State<Lectures> {
     )));
   }
 
-
-
   Widget audioPlayer() {
     return AudioPlayer(audioList: lectureController.mp3List);
   }
@@ -88,29 +91,22 @@ class _LecturesState extends State<Lectures> {
           },
         ),
       )),
+      BottomAudioPlayerPanel(),
+
     ]);
   }
 
   Widget displayEachEntry(entry, index) {
     return Obx(() => Container(
           margin: const EdgeInsets.only(left: 10.0, right: 10.0),
-          decoration: playerController.currentIndex == index && entry.type == "RECORD"
-              ? selectedListTileDec()
-              : null,
+          decoration:
+              playerController.currentIndex == index && entry.type == "RECORD"
+                  ? selectedListTileDec()
+                  : null,
           child: ListTile(
               title: displayRecordTitle(entry),
               leading: entry.type == "RECORD"
-                  ? Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: Container(
-                          width: 40,
-                          height: 40,
-                          decoration: linearGradientBackground(),
-                          child: Icon(
-                            Icons.play_arrow,
-                            color: Colors.white,
-                          )),
-                    )
+                  ? listTileEntryPlayButton(entry, index)
                   : Icon(Icons.menu, color: UtilColours.APP_BAR),
               trailing: entry.type == "RECORD"
                   // ? listMenuItems(entry) : SizedBox.shrink(),
@@ -127,11 +123,30 @@ class _LecturesState extends State<Lectures> {
                   playerController.createPlayer(
                       lectureController.mp3List, index);
                   playerController.player.play();
+                  // playerController.showBottomPlayer.value = true;
                 } else {
                   innerNavigate(entry);
                 }
               }),
         ));
+  }
+
+  Widget listTileEntryPlayButton(entry, index) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 10.0),
+      child: Container(
+          width: 40,
+          height: 40,
+          decoration: linearGradientBackground(),
+          child: Icon(
+            playerController.currentIndex == index &&
+                    entry.type == "RECORD" &&
+                    playerController.playing.value == true
+                ? Icons.pause
+                : Icons.play_arrow,
+            color: Colors.white,
+          )),
+    );
   }
 
   Widget displayRecordTitle(entry) {
