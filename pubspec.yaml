@@ -20,8 +20,10 @@ dependencies:
   flutter_staggered_animations: "^1.1.1" # Display grid with animation
   percent_indicator:            "^4.2.3"
   dio:                          "^4.0.0"
-  path_provider:                 "^2.1.0"
-#  flutter_pdfview:              "^1.2.1"
+  path_provider:                "^2.1.0"
+  share_plus:                   "^7.1.0"
+
+  #  flutter_pdfview:              "^1.2.1"
   just_audio:                   "^0.9.34"
   flutter_inappwebview:          "^5.7.2+3" # Open webpage for live stream
 #  url_launcher:                 "^6.0.0"

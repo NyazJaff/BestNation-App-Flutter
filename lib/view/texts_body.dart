@@ -2,6 +2,7 @@ import 'package:bestnation/Helper/util.dart';
 import 'package:flutter/material.dart';
 import 'package:bestnation/utilities/layout_helper.dart';
 import 'package:flutter/services.dart';
+import 'package:share_plus/share_plus.dart';
 
 class TextsBody extends StatefulWidget {
   TextsBody({
@@ -109,7 +110,7 @@ class _TextsBodyState extends State<TextsBody> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               TextButton.icon(
-                                  onPressed: () => {},
+                                  onPressed: () => {Share.share(widget.body)},
                                   icon: Icon(Icons.share, color: UtilColours.APP_BAR,),
                                   label: Text('مشاركة',  style: arabicTxtStyle())),
                               TextButton.icon(

@@ -57,16 +57,6 @@ class _LecturesState extends State<Lectures> {
         ));
   }
 
-  Widget displayNoRecordFound() {
-    return Container(
-        child: Center(
-            child: Text(
-      "no_records_currently_added!".tr,
-      style: arabicTxtStyle(),
-      textAlign: TextAlign.center,
-    )));
-  }
-
   Widget audioPlayer() {
     return AudioPlayer(audioList: lectureController.mp3List);
   }

@@ -1,15 +1,18 @@
 import 'package:bestnation/controller/flat_download_controller.dart';
 import 'package:bestnation/controller/lecture_controller.dart';
 import 'package:bestnation/utilities/app_translation.dart';
+import 'package:bestnation/view/texts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 // Pages
 import 'Helper/db_helper.dart';
 import 'controller/audio_player_controller.dart';
+import 'controller/text_controller.dart';
 import 'home.dart';
 import 'view/lectures.dart';
 
@@ -24,6 +27,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.create(() => LectureController()); // This so Lectures can call itself
+    Get.create(() => TextController()); // This so Text can call itself
     final AudioPlayerController player = Get.put(AudioPlayerController());
 
     return GetMaterialApp(
@@ -35,6 +39,7 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(name: '/', page: () => MyHomePage()),
         GetPage(name: "/lectures", page: () => Lectures()),
+        GetPage(name: "/texts", page: () => Texts()),
       ],
       // routes: {
       //   '/': (context) => MyHomePage(),
@@ -55,6 +60,9 @@ class MyApp extends StatelessWidget {
       // supportedLocales: context.supportedLocales,
 
       theme: ThemeData(
+        appBarTheme: Theme.of(context)
+        .appBarTheme
+        .copyWith(systemOverlayStyle: SystemUiOverlayStyle.dark), // set clocks and battery icons to dark
         textTheme: Theme.of(context).textTheme.apply(
           fontFamily:
           Get.locale.toString() == 'ar_SA' ? 'Tajawal' :

@@ -186,10 +186,20 @@ Widget buildBackground(){
   );
 }
 
+Widget displayNoRecordFound() {
+  return Container(
+      child: Center(
+          child: Text(
+            "no_records_currently_added".tr,
+            style: arabicTxtStyle(),
+            textAlign: TextAlign.center,
+          )));
+}
+
 Widget createLogoDisplay(image) {
   return Container(
     width: 200,
-    height: 130,
+    height: 80,
     padding: EdgeInsets.all(10),
     decoration: linearGradientBackground(radius: 10.0),
     child: Container(
@@ -232,9 +242,7 @@ final valueBoxDecorationStyle = BoxDecoration(
 
 final valueHintBoxDecorationStyle = TextStyle(
   color: textAndIconHintColour,
-  fontSize: 33,
-  fontWeight: FontWeight.bold,
-  fontFamily: 'OpenSans',
+  fontSize: 20,
 );
 
 Widget jaffLogo(){

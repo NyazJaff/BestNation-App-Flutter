@@ -180,7 +180,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     child: Column(
                                       children: [
                                         createMainButton('العلماء وطلاب العلم', 'person_icon', "/lectures", {'title':'lectures'.tr, 'parentId': '0', 'classType': DatabaseHelper.LECTURES}),
-                                        // createMainButton('الفوائد المنتقاة', 'text_icon', '/texts'),
+                                        createMainButton('الفوائد المنتقاة', 'text_icon', '/texts', {'title':'texts'.tr, 'parentId': '0', 'classType': DatabaseHelper.TEXTS}),
                                         // createMainButton('الإذاعة', 'book_with_pen_icon', '/live_broadcast'),
                                         // createMainButton('الكتب', 'book_icon', '/books')
                                       ],

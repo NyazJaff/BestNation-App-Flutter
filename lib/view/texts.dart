@@ -1,53 +1,20 @@
 import 'package:bestnation/Helper/util.dart';
-import 'package:bestnation/models/epic_model.dart';
 import 'package:bestnation/view/texts_body.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:bestnation/utilities/layout_helper.dart';
-import 'package:bestnation/utilities/chasing_dots.dart';
 import 'package:get/get.dart';
 
-class Texts extends StatefulWidget {
-  Texts({
-    super.key,
-    this.title = "",
-    required this.parentId,
-    required this.classType,
-  });
+import '../controller/text_controller.dart';
 
-  final String title;
-  final String parentId;
-  final String classType;
+class Texts extends StatefulWidget {
+  Texts({super.key});
 
   @override
   _TextsState createState() => _TextsState();
 }
 
 class _TextsState extends State<Texts> {
-  List<Epic> records = [];
-  bool loading = true;
-  TextEditingController nameSearch = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  innerNavigate(title, firebaseId) {
-    var classToCall = Texts(
-        title: title,
-        parentId: firebaseId,
-        classType: widget.classType,
-        key: UniqueKey());
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => classToCall));
-  }
+  final TextController textController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -55,70 +22,59 @@ class _TextsState extends State<Texts> {
         height: double.infinity,
         decoration: appBackgroundGradient(),
         child: Scaffold(
-          appBar: appBar(context, widget.title),
+          appBar: appBar(context, textController.args['title']),
           backgroundColor: Colors.transparent,
-          body: Stack(children: <Widget>[
-            Positioned.fill(
-                child: Align(
-                    alignment: Alignment.center,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                        ),
-                        createLogoDisplay('text-view-heading.png'),
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                        ),
-                        loading == false
-                            ? records.length > 0
-                                ? Column(
-                                    children: [
-                                      // Container(
-                                      //   width: 300,
-                                      //   child: Input(
-                                      //     onNameChangeCallback: onNameChangeCallback,
-                                      //     controller:  nameSearch,
-                                      //     hint:        '',
-                                      //     leadingIcon: Icons.search,
-                                      //   ),
-                                      // ),
-                                      // SizedBox(height: 20.0),
-                                      Container(
-                                        height:
-                                            MediaQuery.of(context).size.height *
+          body: Obx(() => Stack(children: <Widget>[
+                Positioned.fill(
+                    child: Align(
+                        alignment: Alignment.center,
+                        child: Column(
+                          children: [
+                            SizedBox(height: 10),
+                            searchBox(),
+                            SizedBox(height: 10),
+                            createLogoDisplay('text-view-heading.png'),
+                            textController.loading.value == false
+                                ? textController.records.length > 0
+                                    ? Column(
+                                        children: [
+                                          SizedBox(height: 20),
+                                          Container(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height *
                                                 0.6,
-                                        child: SingleChildScrollView(
-                                            child: textsList()),
-                                      )
-                                    ],
-                                  ) // Display Record
-                                : Container(
-                                    child: Center(
-                                        child: Text(
-                                    "no_records_currently_added!".tr,
-                                    style: arabicTxtStyle(),
-                                    textAlign: TextAlign.center,
-                                  ))) // No Record Found
-                            : Container(
-                                child: Center(
-                                    child: SpinKitChasingDots(
-                                color: UtilColours.APP_BAR,
-                                size: 50.0,
-                              )))
-                      ],
-                    ))),
-          ]),
+                                            child: SingleChildScrollView(
+                                                child: textsList()),
+                                          )
+                                        ],
+                                      ) // Display Record
+                                    : displayNoRecordFound() // No Record Found
+                                : displayLoading()
+                          ],
+                        ))),
+              ])),
         ));
+  }
+
+  innerNavigate(entry) {
+    Get.to(
+      () => Texts(),
+      arguments: {
+        'title': entry.name.toString(),
+        'parentId': entry.firebaseId,
+        'classType': textController.args['classType']
+      },
+      preventDuplicates: false,
+    );
   }
 
   Widget textsList() {
     return Container(
-        // decoration: selectedListTileDec(colour: 0xffc8cae6),
         width: 300,
         child: Column(
           children: [
-            for (final entry in records)
+            for (final entry in textController.records)
               Column(
                 key: ValueKey(entry),
                 //set mainAxisSize to min to avoid items disappearing on reorder
@@ -145,7 +101,7 @@ class _TextsState extends State<Texts> {
                                 MaterialPageRoute(
                                     builder: (context) => classToCall));
                           } else {
-                            innerNavigate(entry.name, entry.firebaseId);
+                            innerNavigate(entry);
                           }
                         }),
                   ),
@@ -155,39 +111,36 @@ class _TextsState extends State<Texts> {
                 ],
               )
           ],
-        )
+        ));
+  }
 
-        // ListView.separated(
-        //   // scrollDirection: Axis.vertical,
-        //   shrinkWrap: true,
-        //   itemCount: records.length,
-        //   itemBuilder: (BuildContext context, int index){
-        //     var entry = records[index];
-        //     return ListTile(
-        //         title: Text(
-        //           'فوائد من كتاب التوحيد',
-        //           style:arabicTxtStyle(paramBold: true, paramColour: Color(0xff363f68) ),
-        //           textAlign: TextAlign.center,
-        //         ),
-        //         // subtitle:  Container(
-        //         //   child: Column(
-        //         //   crossAxisAlignment: CrossAxisAlignment.stretch,
-        //         //     children: <Widget>[
-        //         //       Container(child: Text("Page: ".toString(), style: arabicTxtStyle(paramSize: 18.0)),),
-        //         //     ])),
-        //         // trailing: new IconButton(icon: Icon(Icons.delete), onPressed: (){}),
-        //         onTap: () {
-        //           if(entry.type == "RECORD"){
-        //
-        //           }else{
-        //             print(entry);
-        //             innerNavigate(entry.name, entry.firebaseId);
-        //           }
-        //         }
-        //     );
-        //   }, separatorBuilder: (BuildContext context, int index) {
-        //   return Divider();
-        // },),
-        );
+  Widget searchBox() {
+    return Container(
+        decoration: valueBoxDecorationStyle,
+        width: 250,
+        height: 50,
+        child: Center(
+          child: ListTile(
+              title: TextField(
+                onChanged: (String value) {},
+                style: TextStyle(
+                    color: textAndIconColour,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'search'.tr,
+                    hintStyle: valueHintBoxDecorationStyle),
+              ),
+              leading: IconButton(
+                icon: const Icon(
+                  Icons.search,
+                  color: Colors.grey,
+                ),
+                iconSize: 30,
+                tooltip: 'stop'.tr,
+                onPressed: () {},
+              )),
+        ));
   }
 }
