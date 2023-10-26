@@ -48,6 +48,27 @@ class DatabaseHelper {
     return doc.data().toString().contains(key) ? doc.get(key) : "";
   }
 
+  Epic formatAlgoliaHitForSave(hit, String category) {
+    return new Epic(
+
+      firebaseId: hitValueFromKey(hit, 'objectID'),
+      parentId: hitValueFromKey(hit, "parentId"),
+      name: hit.keys.contains('name') ? hit['name'] : hit.keys.contains('title') ? hit['title'] : "",
+      body: hitValueFromKey(hit, "body"),
+      title: hitValueFromKey(hit, "title"),
+      question: hitValueFromKey(hit, "question"),
+      answer: hitValueFromKey(hit, "answer"),
+      createdTime: hitValueFromKey(hit, "createdTime"),
+      mp3URL: hitValueFromKey(hit, "mp3URL"),
+      pdfURL: hitValueFromKey(hit, "pdfURL"),
+      type: hitValueFromKey(hit, "type"),
+      category: category,
+    );
+  }
+
+  hitValueFromKey(hit, key) {
+    return hit.keys.contains(key) ? hit[key] : '';
+  }
 
   Epic formatEpicForReturn(Map<String, dynamic> map){
     return new Epic(

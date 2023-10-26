@@ -15,6 +15,12 @@ class Texts extends StatefulWidget {
 
 class _TextsState extends State<Texts> {
   final TextController textController = Get.find();
+  final _searchTextController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +40,7 @@ class _TextsState extends State<Texts> {
                             searchBox(),
                             SizedBox(height: 10),
                             createLogoDisplay('text-view-heading.png'),
+                            SizedBox(height: 15),
                             textController.loading.value == false
                                 ? textController.records.length > 0
                                     ? Column(
@@ -90,11 +97,12 @@ class _TextsState extends State<Texts> {
                               paramBold: true, paramColour: Color(0xff363f68)),
                           textAlign: TextAlign.center,
                         ),
-                        onTap: () {
+                        onTap: () async {
                           if (entry.type == "RECORD") {
+                            var record = await textController.pullSingleText(entry.firebaseId);
                             var classToCall = TextsBody(
                                 title: entry.name,
-                                body: entry.body,
+                                body: record.body,
                                 key: UniqueKey());
                             Navigator.push(
                                 context,
@@ -122,7 +130,10 @@ class _TextsState extends State<Texts> {
         child: Center(
           child: ListTile(
               title: TextField(
-                onChanged: (String value) {},
+                controller: _searchTextController,
+                onChanged: (String value) {
+                  textController.fullSearchData(value);
+                },
                 style: TextStyle(
                     color: textAndIconColour,
                     fontSize: 20,
