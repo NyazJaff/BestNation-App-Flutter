@@ -64,16 +64,37 @@ class _TextsState extends State<Texts> {
         ));
   }
 
-  innerNavigate(entry) {
-    Get.to(
-      () => Texts(),
-      arguments: {
-        'title': entry.name.toString(),
-        'parentId': entry.firebaseId,
-        'classType': textController.args['classType']
-      },
-      preventDuplicates: false,
-    );
+  Widget searchBox() {
+    return Container(
+        decoration: valueBoxDecorationStyle,
+        width: 250,
+        height: 50,
+        child: Center(
+          child: ListTile(
+              title: TextField(
+                controller: _searchTextController,
+                onChanged: (String value) {
+                  textController.algoliaTextSearch(value);
+                },
+                style: TextStyle(
+                    color: textAndIconColour,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'search'.tr,
+                    hintStyle: valueHintBoxDecorationStyle),
+              ),
+              leading: IconButton(
+                icon: const Icon(
+                  Icons.search,
+                  color: Colors.grey,
+                ),
+                iconSize: 30,
+                tooltip: 'stop'.tr,
+                onPressed: () {},
+              )),
+        ));
   }
 
   Widget textsList() {
@@ -122,36 +143,15 @@ class _TextsState extends State<Texts> {
         ));
   }
 
-  Widget searchBox() {
-    return Container(
-        decoration: valueBoxDecorationStyle,
-        width: 250,
-        height: 50,
-        child: Center(
-          child: ListTile(
-              title: TextField(
-                controller: _searchTextController,
-                onChanged: (String value) {
-                  textController.fullSearchData(value);
-                },
-                style: TextStyle(
-                    color: textAndIconColour,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-                decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'search'.tr,
-                    hintStyle: valueHintBoxDecorationStyle),
-              ),
-              leading: IconButton(
-                icon: const Icon(
-                  Icons.search,
-                  color: Colors.grey,
-                ),
-                iconSize: 30,
-                tooltip: 'stop'.tr,
-                onPressed: () {},
-              )),
-        ));
+  innerNavigate(entry) {
+    Get.to(
+          () => Texts(),
+      arguments: {
+        'title': entry.name.toString(),
+        'parentId': entry.firebaseId,
+        'classType': textController.args['classType']
+      },
+      preventDuplicates: false,
+    );
   }
 }

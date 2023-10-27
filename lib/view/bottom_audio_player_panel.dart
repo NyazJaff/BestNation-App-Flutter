@@ -23,25 +23,27 @@ class _BottomAudioPlayerPanelState extends State<BottomAudioPlayerPanel> {
   Widget build(BuildContext context) {
     String? routeName = '';
     var route = ModalRoute.of(context);
-    if(route!=null){
+    if (route != null) {
       routeName = route.settings.name;
     }
-    return Obx(() => playerController.showBottomPlayer.value == true
-        && ((lectureController.records.length > 0 && lectureController.records[0].type != "RECORD") || routeName == '/')
+    return Obx(() => playerController.showBottomPlayer.value == true &&
+            ((lectureController.records.length > 0 &&
+                    lectureController.records[0].type != "RECORD") ||
+                routeName == '/')
         ? Stack(
-      children: [
-        card(),
-        // displayCliphic(),
-        tile(),
-      ],
-    )
+            children: [
+              card(),
+              // displayCliphic(),
+              tile(),
+            ],
+          )
         : Container());
   }
 
   Widget tile() {
     return ListTile(
       visualDensity: VisualDensity(vertical: 4),
-      title: createTitle(playerController.title),
+      title: createTitle(playerController.bottomPlayerTitle.value),
       subtitle: duration(),
       leading: IconButton(
         icon: const Icon(
@@ -53,31 +55,29 @@ class _BottomAudioPlayerPanelState extends State<BottomAudioPlayerPanel> {
         onPressed: () {
           playerController.player.stop();
           playerController.showBottomPlayer.value = false;
-
         },
       ),
       trailing: playerController.playing.value == true
           ? IconButton(
-        icon: const Icon(
-          FontAwesomeIcons.pause,
-          color: Colors.white70,
-        ),
-        iconSize: 40,
-        tooltip: 'pause'.tr,
-        onPressed: () {
-          playerController.player.pause();
-          playerController.playing.value = false;
-        },
-      ) // Pause
+              icon: const Icon(
+                FontAwesomeIcons.pause,
+                color: Colors.white70,
+              ),
+              iconSize: 40,
+              tooltip: 'pause'.tr,
+              onPressed: () {
+                playerController.player.pause();
+                playerController.playing.value = false;
+              },
+            ) // Pause
           : IconButton(
-        icon:
-        const Icon(FontAwesomeIcons.play, color: Colors.white70),
-        iconSize: 40,
-        tooltip: 'play'.tr,
-        onPressed: () {
-          playerController.player.play();
-        },
-      ),
+              icon: const Icon(FontAwesomeIcons.play, color: Colors.white70),
+              iconSize: 40,
+              tooltip: 'play'.tr,
+              onPressed: () {
+                playerController.player.play();
+              },
+            ),
     );
   }
 

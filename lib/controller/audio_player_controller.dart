@@ -9,6 +9,7 @@ class AudioPlayerController extends GetxController {
   AudioPlayer player = AudioPlayer();
   RxBool playing = false.obs;
   RxBool showBottomPlayer = false.obs;
+  RxString bottomPlayerTitle = "".obs;
   RxBool loading = true.obs;
   RxInt currentIndex = 0.obs;
   RxDouble speed = 1.0.obs;
@@ -67,7 +68,7 @@ class AudioPlayerController extends GetxController {
           loading.value = false;
           player.currentIndexStream.listen((currentIndexStream) {
             if (currentIndexStream != null) {
-              currentIndex.value = currentIndexStream;
+              // currentIndex.value = currentIndexStream; # because we not running in a placelist mode anymore
             }
           });
         case ProcessingState.completed:

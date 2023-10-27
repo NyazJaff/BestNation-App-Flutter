@@ -1,6 +1,7 @@
 import 'package:bestnation/controller/flat_download_controller.dart';
 import 'package:bestnation/controller/lecture_controller.dart';
 import 'package:bestnation/utilities/app_translation.dart';
+import 'package:bestnation/view/live_broadcast.dart';
 import 'package:bestnation/view/texts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/', page: () => MyHomePage()),
         GetPage(name: "/lectures", page: () => Lectures()),
         GetPage(name: "/texts", page: () => Texts()),
+        GetPage(name: "/live_broadcast", page: () => LiveBroadcast()),
       ],
       // routes: {
       //   '/': (context) => MyHomePage(),

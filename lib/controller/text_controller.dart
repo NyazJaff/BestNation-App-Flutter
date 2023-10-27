@@ -49,14 +49,13 @@ class TextController extends GetxController {
   }
 
 
-  fullSearchData(value) async {
+  algoliaTextSearch(value) async {
     if(value != "") {
       listenToHitSearch();
       _productsSearcher.query(value);
     }else {
       pullDataFromNetwork();
     }
-    // print(await _productsSearcher.responses.map(SearchMetadata.fromResponse));
   }
 
   pullDataFromNetwork() async {
@@ -97,7 +96,6 @@ class TextController extends GetxController {
 
   formatFirebaseDocuments(document) async {
     await doFormat(document);
-    // records.sort((b, a) => a.firebaseId.compareTo(b.firebaseId)); // Sort Records
     loading.value = false;
   }
 

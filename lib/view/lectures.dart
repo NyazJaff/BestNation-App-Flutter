@@ -19,6 +19,7 @@ class Lectures extends StatefulWidget {
 
 class _LecturesState extends State<Lectures> {
   final LectureController lectureController = Get.find();
+  final _searchTextController = TextEditingController();
   final AudioPlayerController playerController =
       Get.put(AudioPlayerController());
 
@@ -49,9 +50,7 @@ class _LecturesState extends State<Lectures> {
                 ),
                 lectureController.loading.value == true
                     ? displayLoading()
-                    : lectureController.records.length > 0
-                        ? epicsList()
-                        : displayNoRecordFound() // No Record Found
+                    : epicsList()  // No Record Found
                 // Loading
               ])),
         ));
@@ -65,24 +64,26 @@ class _LecturesState extends State<Lectures> {
     return Column(children: [
       lectureController.displayPlayer.value == true
           ? audioPlayer()
-          : Container(),
-      Container(
+          : searchBox(),
+      SizedBox(height: 15),
+      lectureController.records.length > 0
+          ? Container(
           child: Expanded(
-        child: ListView.separated(
-          // scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: lectureController.records.length,
-          itemBuilder: (BuildContext context, int index) {
-            var entry = lectureController.records[index];
-            return displayEachEntry(entry, index);
-          },
-          separatorBuilder: (BuildContext context, int index) {
-            return Divider();
-          },
-        ),
-      )),
+            child: ListView.separated(
+              // scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: lectureController.records.length,
+              itemBuilder: (BuildContext context, int index) {
+                var entry = lectureController.records[index];
+                return displayEachEntry(entry, index);
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return Divider();
+              },
+            ),
+          ))
+          : displayNoRecordFound(),
       BottomAudioPlayerPanel(),
-
     ]);
   }
 
@@ -108,12 +109,16 @@ class _LecturesState extends State<Lectures> {
                       ],
                     )
                   : SizedBox.shrink(),
-              onTap: () {
+              onTap: () async {
                 if (entry.type == "RECORD") {
-                  playerController.createPlayer(
-                      lectureController.mp3List, index);
+
+                  playerController.currentIndex.value = index;
+                  await lectureController.addEpicToPlayList(entry);
+                  await playerController.createPlayer(
+                      lectureController.mp3List, 0);
                   playerController.player.play();
-                  // playerController.showBottomPlayer.value = true;
+                  playerController.showBottomPlayer.value = true;
+                  playerController.bottomPlayerTitle.value = entry.name;
                 } else {
                   innerNavigate(entry);
                 }
@@ -143,9 +148,42 @@ class _LecturesState extends State<Lectures> {
     return Text(entry.name.toString(), style: arabicTxtStyle(paramSize: 18.0));
   }
 
+  Widget searchBox() {
+    return Container(
+        decoration: valueBoxDecorationStyle,
+        width: 250,
+        height: 50,
+        child: Center(
+          child: ListTile(
+              title: TextField(
+                controller: _searchTextController,
+                onChanged: (String value) {
+                  lectureController.algoliaLectureSearch(value);
+                },
+                style: TextStyle(
+                    color: textAndIconColour,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'search'.tr,
+                    hintStyle: valueHintBoxDecorationStyle),
+              ),
+              leading: IconButton(
+                icon: const Icon(
+                  Icons.search,
+                  color: Colors.grey,
+                ),
+                iconSize: 30,
+                tooltip: 'stop'.tr,
+                onPressed: () {},
+              )),
+        ));
+  }
+
   innerNavigate(entry) {
     Get.to(
-      () => Lectures(),
+          () => Lectures(),
       arguments: {
         'title': entry.name.toString(),
         'parentId': entry.firebaseId,
@@ -153,15 +191,5 @@ class _LecturesState extends State<Lectures> {
       },
       preventDuplicates: false,
     );
-
-    // Get.toNamed(
-    //   "/lectures",
-    //   arguments: {
-    //     'title': entry.name.toString(),
-    //     'parentId': entry.firebaseId,
-    //     'classType': lectureController.args['classType']
-    //   },
-    //   preventDuplicates: false,
-    // );
   }
 }

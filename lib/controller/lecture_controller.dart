@@ -1,3 +1,4 @@
+import 'package:algolia_helper_flutter/algolia_helper_flutter.dart';
 import 'package:bestnation/Helper/db_helper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -18,6 +19,10 @@ class LectureController extends GetxController {
 
   List<AudioSource> mp3List = [];
 
+  final _productsSearcher = HitsSearcher(applicationID: '9D19WMHJX8',
+      apiKey: '88f4b5a0f116ad981e784e1302b2206c',
+      indexName: 'lectures');
+
   @override
   void onInit() {
     super.onInit();
@@ -34,7 +39,7 @@ class LectureController extends GetxController {
         await _pullLectures();
         break;
     }
-    _createPlayList();
+    addEpicToPlayList(records.first);
   }
 
   _pullLectures() async {
@@ -44,8 +49,7 @@ class LectureController extends GetxController {
         .orderBy('order')
         .get();
 
-    formatFirebaseDocuments(document);
-    return records;
+    await formatFirebaseDocuments(document);
   }
 
   formatFirebaseDocuments(document) async {
@@ -55,44 +59,62 @@ class LectureController extends GetxController {
   }
 
   _createPlayList() async {
-    String dir = await getSystemPath();
     if (displayPlayer.value == true) {
       for (final e in this.records) {
-        if (e.filePathExists) {
-          String savedPath =
-              "$dir/" + e.mp3URL.substring(e.mp3URL.lastIndexOf("/") + 1);
-          Uri url = Uri.file(savedPath);
-          mp3List.add(ProgressiveAudioSource(url));
-        } else if (isThereNetwork.value) {
-          Uri url = Uri.parse(e.mp3URL);
-          mp3List.add(AudioSource.uri(url));
-        }
+        await addEpicToPlayList(e);
       }
     }
-    update();
+  }
+
+  addEpicToPlayList(e) async {
+    mp3List.clear();
+    String dir = await getSystemPath();
+    if (e.filePathExists) {
+      String savedPath =
+          "$dir/" + e.mp3URL.substring(e.mp3URL.lastIndexOf("/") + 1);
+      Uri url = Uri.file(savedPath);
+      mp3List.add(ProgressiveAudioSource(url));
+    } else if (isThereNetwork.value) {
+      Uri url = Uri.parse(e.mp3URL);
+      mp3List.add(AudioSource.uri(url));
+    }
   }
 
   doFormat(document) async {
+    this.records.clear();
     await document.docs.forEach((document) async {
       Epic epic = db.formatEpicForSave(document,
           args['classType']); // eg, classType = DatabaseHelper.LECTURES
       if (document['type'] == 'RECORD') {
         displayPlayer.value = true;
-        await doesUrlFileExits(document['mp3URL']).then((exists) {
-          if (exists != null && exists.path != null) {
-            epic.filePathExists = true;
-            records.add(epic);
-          } else if (isThereNetwork.value) {
-            records.add(epic);
-          }
-        });
+        this.records.add(epic);
       } else {
-        records.add(epic);
+        this.records.add(epic);
       }
     });
     update();
   }
 
+  // Algolia
+  algoliaLectureSearch(value) async{
+    if(value != "") {
+      listenToHitSearch();
+      _productsSearcher.query(value);
+    }else {
+      pullDataFromNetwork();
+    }
+  }
+
+  listenToHitSearch(){
+    _productsSearcher.responses.listen((snapshot) {
+      records.clear();
+      for(var hit in snapshot.hits ) {
+        Epic epic = db.formatAlgoliaHitForSave(hit,
+            args['classType']); // eg, classType = DatabaseHelper.TEXT
+        records.add(epic);
+      }
+    });
+  }
 }
 
 
