@@ -1,4 +1,5 @@
 import 'package:bestnation/Helper/util.dart';
+import 'package:bestnation/view/book/pdf_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:bestnation/utilities/layout_helper.dart';
 import 'package:get/get.dart';
@@ -156,7 +157,15 @@ class _BooksState extends State<Books> {
   openBook(entry) async{
     await doesUrlFileExits(entry.pdfURL).then((exists) async{
       if (exists != null) {
-
+        Get.to(
+              () => PdfScreen(),
+          arguments: {
+            'title': entry.name.toString(),
+            'parentId': entry.firebaseId,
+            'classType': booksController.args['classType']
+          },
+          preventDuplicates: false,
+        );
       }
     });
   }
