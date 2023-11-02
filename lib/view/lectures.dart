@@ -117,8 +117,7 @@ class _LecturesState extends State<Lectures> {
                   await playerController.createPlayer(
                       lectureController.mp3List, 0);
                   playerController.player.play();
-                  playerController.showBottomPlayer.value = true;
-                  playerController.bottomPlayerTitle.value = entry.name;
+                  playerController.showBottomPlayer.value = playerController.bottomPlayerTitle.value = entry.name;
                 } else {
                   innerNavigate(entry);
                 }

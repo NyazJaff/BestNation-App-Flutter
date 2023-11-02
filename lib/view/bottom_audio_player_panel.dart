@@ -1,9 +1,7 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
 import '../controller/audio_player_controller.dart';
-import '../Helper/util.dart';
 import '../controller/lecture_controller.dart';
 import '../utilities/layout_helper.dart';
 

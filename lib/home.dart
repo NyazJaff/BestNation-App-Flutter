@@ -1,6 +1,5 @@
 import 'package:bestnation/utilities/layout_helper.dart';
 import 'package:bestnation/view/bottom_audio_player_panel.dart';
-import 'package:bestnation/view/lectures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -179,10 +178,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                   child: Container(
                                     child: Column(
                                       children: [
-                                        createMainButton('العلماء وطلاب العلم', 'person_icon', "/lectures", {'title':'lectures'.tr, 'parentId': '0', 'classType': DatabaseHelper.LECTURES}),
-                                        createMainButton('الفوائد المنتقاة', 'text_icon', '/texts', {'title':'texts'.tr, 'parentId': '0', 'classType': DatabaseHelper.TEXTS}),
-                                        createMainButton('الإذاعة', 'book_with_pen_icon', '/live_broadcast',  {'title':'broadcast'.tr}),
-                                        // createMainButton('الكتب', 'book_icon', '/books')
+                                        createMainButton('lectures'.tr, 'person_icon', "/lectures", {'title':'lectures'.tr, 'parentId': '0', 'classType': DatabaseHelper.LECTURES}),
+                                        createMainButton('texts'.tr, 'text_icon', '/texts', {'title':'texts'.tr, 'parentId': '0', 'classType': DatabaseHelper.TEXTS}),
+                                        createMainButton('books'.tr, 'book_icon', '/books', {'title':'books'.tr,  'parentId': '0', 'classType': DatabaseHelper.BOOKS} ),
+                                        createMainButton('broadcast'.tr, 'book_with_pen_icon', '/live_broadcast',  {'title':'broadcast'.tr})
                                       ],
                                     ),
                                   )

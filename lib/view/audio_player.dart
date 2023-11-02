@@ -5,7 +5,6 @@ import 'package:just_audio/just_audio.dart';
 import '../controller/audio_player_controller.dart';
 import '../Helper/util.dart';
 import '../utilities/layout_helper.dart';
-import 'dart:math' as math;
 
 class AudioPlayer extends StatefulWidget {
   final List<AudioSource> audioList;

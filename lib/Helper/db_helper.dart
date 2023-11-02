@@ -17,6 +17,7 @@ class DatabaseHelper {
   static const String LECTURES = "LECTURE"; //currently not saving to db
   static const String TEXTS = "TEXT"; //currently not saving to db
   static const String SPEECH = "SPEECH"; //currently not saving to db
+  static const String BOOKS = "BOOKS";
 
   Future<Database>get db async{
   return openDatabase(
