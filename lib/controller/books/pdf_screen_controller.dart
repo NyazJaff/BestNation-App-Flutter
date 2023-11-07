@@ -31,8 +31,6 @@ class PdfScreenController extends GetxController {
     await pullSingleBook('test');
   }
 
-
-
   pullSingleBook(id) async{
     loading.value = true;
     await Firebase.initializeApp();

@@ -32,7 +32,8 @@ class LectureController extends GetxController {
   }
 
   pullDataFromNetwork() async {
-    await Firebase.initializeApp();
+    FirebaseFirestore.instance.settings =
+    const Settings(persistenceEnabled: true, cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,);
     isThereNetwork.value = await hasNetwork();
     switch (Get.arguments['classType']) {
       case DatabaseHelper.LECTURES:
@@ -43,11 +44,15 @@ class LectureController extends GetxController {
   }
 
   _pullLectures() async {
+    var cacheSource = Source.cache;
+    if (isThereNetwork.value) {
+      cacheSource = Source.server;
+    }
     QuerySnapshot document = await FirebaseFirestore.instance
         .collection("users")
         .where('parentId', isEqualTo: args['parentId'])
         .orderBy('order')
-        .get();
+        .get(GetOptions(source: cacheSource));
 
     await formatFirebaseDocuments(document);
   }
@@ -66,18 +71,20 @@ class LectureController extends GetxController {
     }
   }
 
-  addEpicToPlayList(e) async {
+  addEpicToPlayList(entry) async {
     mp3List.clear();
     String dir = await getSystemPath();
-    if (e.filePathExists) {
-      String savedPath =
-          "$dir/" + e.mp3URL.substring(e.mp3URL.lastIndexOf("/") + 1);
-      Uri url = Uri.file(savedPath);
-      mp3List.add(ProgressiveAudioSource(url));
-    } else if (isThereNetwork.value) {
-      Uri url = Uri.parse(e.mp3URL);
-      mp3List.add(AudioSource.uri(url));
-    }
+    await doesUrlFileExits(entry.mp3URL).then((exists) async{
+      if (exists != null) {
+        String savedPath =
+            "$dir/" + entry.mp3URL.substring(entry.mp3URL.lastIndexOf("/") + 1);
+        Uri url = Uri.file(savedPath);
+        mp3List.add(ProgressiveAudioSource(url));
+      }else {
+        Uri url = Uri.parse(entry.mp3URL);
+        mp3List.add(AudioSource.uri(url));
+      }
+    });
   }
 
   doFormat(document) async {

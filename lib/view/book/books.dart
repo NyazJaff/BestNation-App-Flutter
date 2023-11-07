@@ -162,11 +162,25 @@ class _BooksState extends State<Books> {
           arguments: {
             'title': entry.name.toString(),
             'parentId': entry.firebaseId,
+            'path': exists.path,
             'classType': booksController.args['classType']
           },
           preventDuplicates: false,
         );
+      }else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: pleaseDownloadFile()
+        ));
       }
+
     });
+  }
+
+  Widget pleaseDownloadFile(){
+    return Text(
+      'please_download_file_first'.tr,
+      style: arabicTxtStyle(paramColour: Colors.white),
+      textAlign: TextAlign.right,
+    );
   }
 }

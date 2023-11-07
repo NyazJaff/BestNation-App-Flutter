@@ -111,13 +111,13 @@ class _LecturesState extends State<Lectures> {
                   : SizedBox.shrink(),
               onTap: () async {
                 if (entry.type == "RECORD") {
-
                   playerController.currentIndex.value = index;
                   await lectureController.addEpicToPlayList(entry);
                   await playerController.createPlayer(
                       lectureController.mp3List, 0);
                   playerController.player.play();
-                  playerController.showBottomPlayer.value = playerController.bottomPlayerTitle.value = entry.name;
+                  playerController.showBottomPlayer.value = true;
+                  playerController.bottomPlayerTitle.value = entry.name;
                 } else {
                   innerNavigate(entry);
                 }

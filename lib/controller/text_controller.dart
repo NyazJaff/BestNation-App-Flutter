@@ -59,7 +59,6 @@ class TextController extends GetxController {
   }
 
   pullDataFromNetwork() async {
-    await Firebase.initializeApp();
     isThereNetwork.value = await hasNetwork();
     switch (Get.arguments['classType']) {
       case DatabaseHelper.TEXTS:
@@ -69,11 +68,16 @@ class TextController extends GetxController {
   }
 
   _pullTexts() async {
+    var cacheSource = Source.cache;
+    if (isThereNetwork.value) {
+      cacheSource = Source.server;
+    }
+
     QuerySnapshot document = await FirebaseFirestore.instance
         .collection("texts")
         .where('parentId', isEqualTo: args['parentId'])
         .orderBy('order')
-        .get();
+        .get(GetOptions(source: cacheSource));
 
     formatFirebaseDocuments(document);
     return records;
@@ -82,7 +86,6 @@ class TextController extends GetxController {
   pullSingleText(id) async{
     loading.value = true;
     Epic epic = Epic();
-    await Firebase.initializeApp();
     final docRef = FirebaseFirestore.instance.collection("texts").doc(id);
     await docRef.get().then((DocumentSnapshot doc) {
       epic = db.formatEpicForSave(doc, args['classType']);

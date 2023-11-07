@@ -55,16 +55,23 @@ class BooksController extends GetxController {
 
   pullDataFromNetwork() async {
     await Firebase.initializeApp();
+    FirebaseFirestore.instance.settings =
+      const Settings(persistenceEnabled: true, cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,);
     isThereNetwork.value = await hasNetwork();
     await _pullBooks();
   }
 
   _pullBooks() async {
+    var cacheSource = Source.cache;
+    if (isThereNetwork.value) {
+      cacheSource = Source.server;
+    }
+
     QuerySnapshot document = await FirebaseFirestore.instance
         .collection("books_x")
         .where('parentId', isEqualTo: args['parentId'])
         .orderBy('order')
-        .get();
+        .get(GetOptions(source: cacheSource));
 
     formatFirebaseDocuments(document);
     return records;
