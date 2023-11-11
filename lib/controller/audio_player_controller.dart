@@ -1,3 +1,4 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:bestnation/controller/lecture_controller.dart';
 import 'package:bestnation/utilities/layout_helper.dart';
 import 'package:just_audio/just_audio.dart';
@@ -5,6 +6,9 @@ import 'package:just_audio/just_audio.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../utilities/audio_player_handler.dart';
+
+late AudioHandler _audioHandler;
 class AudioPlayerController extends GetxController {
   AudioPlayer player = AudioPlayer();
   RxBool playing = false.obs;
@@ -18,9 +22,15 @@ class AudioPlayerController extends GetxController {
   var position = 0.0.obs;
   var title = "";
 
+  late AudioHandler _audioHandler;
+
   @override
-  void onReady() {
+  Future<void> onReady() async {
     controllerListeners();
+  }
+
+  setAudioHandler(handler){
+    _audioHandler = handler;
   }
 
   @override
@@ -31,7 +41,7 @@ class AudioPlayerController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    checkPermission();
+    // checkPermission();
   }
 
 
@@ -86,9 +96,15 @@ class AudioPlayerController extends GetxController {
     return '$HH:$mm:$ss';
   }
 
-  createPlayer(mp3List, index) async {
-    await player.setAudioSource(ConcatenatingAudioSource(children: mp3List),
-        initialIndex: index, initialPosition: Duration.zero);
+  createPlayer(entry) async {
+    final _item = MediaItem(
+      id: entry.mp3URL,
+      title: entry.name ,
+      artUri: Uri.file('assets/brand/lunch_icon.jpg'),
+    );
+    _audioHandler.playMediaItem(_item);
+    // await player.setAudioSource(ConcatenatingAudioSource(children: mp3List),
+    //     initialIndex: index, initialPosition: Duration.zero);
   }
 
   changeDuration(seconds) {

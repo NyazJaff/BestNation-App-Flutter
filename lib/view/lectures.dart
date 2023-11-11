@@ -112,10 +112,9 @@ class _LecturesState extends State<Lectures> {
               onTap: () async {
                 if (entry.type == "RECORD") {
                   playerController.currentIndex.value = index;
-                  await lectureController.addEpicToPlayList(entry);
-                  await playerController.createPlayer(
-                      lectureController.mp3List, 0);
-                  playerController.player.play();
+                  // await lectureController.addEpicToPlayList(entry);
+                  playerController.createPlayer(entry);
+                  // playerController.player.play();
                   playerController.showBottomPlayer.value = true;
                   playerController.bottomPlayerTitle.value = entry.name;
                 } else {

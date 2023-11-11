@@ -1,5 +1,7 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:bestnation/controller/lecture_controller.dart';
 import 'package:bestnation/utilities/app_translation.dart';
+import 'package:bestnation/utilities/audio_player_handler.dart';
 import 'package:bestnation/view/book/books.dart';
 import 'package:bestnation/view/live_broadcast.dart';
 import 'package:bestnation/view/texts.dart';
@@ -18,11 +20,20 @@ import 'controller/text_controller.dart';
 import 'home.dart';
 import 'view/lectures.dart';
 
+late AudioHandler _audioHandler;
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseFirestore.instance.settings = const Settings(
     persistenceEnabled: true,
+  );
+  _audioHandler = await AudioService.init(
+    builder: () => AudioPlayerHandler(),
+    config: const AudioServiceConfig(
+      androidNotificationChannelId: 'com.ryanheise.myapp.channel.audio',
+      androidNotificationChannelName: 'Audio playback',
+      androidNotificationOngoing: true,
+    ),
   );
   runApp(MyApp());
 }
@@ -34,6 +45,8 @@ class MyApp extends StatelessWidget {
     Get.create(() => TextController()); // This so Text can call itself
     Get.create(() => BooksController()); // This so Text can call itself
     final AudioPlayerController player = Get.put(AudioPlayerController());
+
+    player.setAudioHandler(_audioHandler);
 
     return GetMaterialApp(
       translations: AppTranslation(),

@@ -23,7 +23,7 @@ class _AudioPlayerState extends State<AudioPlayer> {
   @override
   void initState() {
     super.initState();
-    playerController.createPlayer(widget.audioList, 0);
+    // playerController.createPlayer(widget.audioList);
   }
 
   @override
