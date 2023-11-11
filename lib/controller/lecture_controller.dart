@@ -16,6 +16,7 @@ class LectureController extends GetxController {
   RxList records = [].obs;
   RxBool loading = true.obs;
   RxBool isThereNetwork = false.obs;
+  RxInt currentIndex = 0.obs;
 
   List<AudioSource> mp3List = [];
 
@@ -29,6 +30,14 @@ class LectureController extends GetxController {
     if (Get.arguments != null) {
       pullDataFromNetwork();
     }
+
+    records.listen((p0) {
+      if (records.length != 0){
+        currentIndex.value = 0;
+        addEpicToPlayList(records.first);
+        loading.value = false;
+      }
+    });
   }
 
   pullDataFromNetwork() async {
@@ -40,7 +49,6 @@ class LectureController extends GetxController {
         await _pullLectures();
         break;
     }
-    addEpicToPlayList(records.first);
   }
 
   _pullLectures() async {
@@ -54,14 +62,14 @@ class LectureController extends GetxController {
         .orderBy('order')
         .get(GetOptions(source: cacheSource));
 
-    await formatFirebaseDocuments(document);
+    doFormat(document);
   }
 
-  formatFirebaseDocuments(document) async {
-    await doFormat(document);
-    // records.sort((b, a) => a.firebaseId.compareTo(b.firebaseId)); // Sort Records
-    loading.value = false;
-  }
+  // formatFirebaseDocuments(document) {
+  //   doFormat(document);
+  //   // records.sort((b, a) => a.firebaseId.compareTo(b.firebaseId)); // Sort Records
+  //   // loading.value = false;
+  // }
 
   _createPlayList() async {
     if (displayPlayer.value == true) {
@@ -87,9 +95,9 @@ class LectureController extends GetxController {
     });
   }
 
-  doFormat(document) async {
+  doFormat(document) {
     this.records.clear();
-    await document.docs.forEach((document) async {
+    document.docs.forEach((document) {
       Epic epic = db.formatEpicForSave(document,
           args['classType']); // eg, classType = DatabaseHelper.LECTURES
       if (document['type'] == 'RECORD') {
@@ -99,7 +107,6 @@ class LectureController extends GetxController {
         this.records.add(epic);
       }
     });
-    update();
   }
 
   // Algolia

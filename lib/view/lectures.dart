@@ -91,7 +91,7 @@ class _LecturesState extends State<Lectures> {
     return Obx(() => Container(
           margin: const EdgeInsets.only(left: 10.0, right: 10.0),
           decoration:
-              playerController.currentIndex == index && entry.type == "RECORD"
+          lectureController.currentIndex == index && entry.type == "RECORD"
                   ? selectedListTileDec()
                   : null,
           child: ListTile(
@@ -111,7 +111,7 @@ class _LecturesState extends State<Lectures> {
                   : SizedBox.shrink(),
               onTap: () async {
                 if (entry.type == "RECORD") {
-                  playerController.currentIndex.value = index;
+                  lectureController.currentIndex.value = index;
                   await lectureController.addEpicToPlayList(entry);
                   await playerController.createPlayer(
                       lectureController.mp3List, 0);
@@ -133,7 +133,7 @@ class _LecturesState extends State<Lectures> {
           height: 40,
           decoration: linearGradientBackground(),
           child: Icon(
-            playerController.currentIndex == index &&
+            lectureController.currentIndex == index &&
                     entry.type == "RECORD" &&
                     playerController.playing.value == true
                 ? Icons.pause

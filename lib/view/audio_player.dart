@@ -85,17 +85,18 @@ class _AudioPlayerState extends State<AudioPlayer> {
     );
   }
 
-  Widget previousButton() {
-    return IconButton(
-      icon: const Icon(FontAwesomeIcons.forwardStep),
-      color:
-          playerController.currentIndex.value == 0 ? Colors.grey : Colors.black,
-      tooltip: 'previous'.tr,
-      onPressed: () {
-        playerController.player.seekToPrevious();
-      },
-    );
-  }
+  // Widget previousButton() {
+  //  because we no longer use playlist this button removed for now
+  //   return IconButton(
+  //     icon: const Icon(FontAwesomeIcons.forwardStep),
+  //     color:
+  //         playerController.currentIndex.value == 0 ? Colors.grey : Colors.black,
+  //     tooltip: 'previous'.tr,
+  //     onPressed: () {
+  //       playerController.player.seekToPrevious();
+  //     },
+  //   );
+  // }
 
   Widget controlButtons() {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [

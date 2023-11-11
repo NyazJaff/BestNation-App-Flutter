@@ -11,7 +11,6 @@ class AudioPlayerController extends GetxController {
   RxBool showBottomPlayer = false.obs;
   RxString bottomPlayerTitle = "".obs;
   RxBool loading = true.obs;
-  RxInt currentIndex = 0.obs;
   RxDouble speed = 1.0.obs;
   var loopMode = LoopMode.all.obs;
   var duration = 0.0.obs;
