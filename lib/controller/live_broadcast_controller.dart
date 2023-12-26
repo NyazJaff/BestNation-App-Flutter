@@ -5,7 +5,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:just_audio/just_audio.dart';
 
 import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:bestnation/Helper/util.dart';
 
 class LiveBroadcastController extends GetxController {
@@ -19,7 +18,6 @@ class LiveBroadcastController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    checkPermission();
   }
 
   @override
@@ -84,13 +82,5 @@ class LiveBroadcastController extends GetxController {
           print('completed');
       }
     });
-  }
-
-  checkPermission() async {
-    var perm = await Permission.storage.request();
-    if (perm.isGranted) {
-    } else {
-      checkPermission();
-    }
   }
 }

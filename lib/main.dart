@@ -6,10 +6,8 @@ import 'package:bestnation/view/texts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 // Pages
 import 'controller/audio_player_controller.dart';
@@ -24,6 +22,9 @@ void main() async{
   FirebaseFirestore.instance.settings = const Settings(
     persistenceEnabled: true,
   );
+
+  // final notificationSettings = await FirebaseMessaging.instance.requestPermission(provisional: true);
+
   runApp(MyApp());
 }
 
@@ -33,7 +34,6 @@ class MyApp extends StatelessWidget {
     Get.create(() => LectureController()); // This so Lectures can call itself
     Get.create(() => TextController()); // This so Text can call itself
     Get.create(() => BooksController()); // This so Text can call itself
-    final AudioPlayerController player = Get.put(AudioPlayerController());
 
     return GetMaterialApp(
       translations: AppTranslation(),

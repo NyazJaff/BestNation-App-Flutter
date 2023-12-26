@@ -1,7 +1,7 @@
 name: bestnation
 description: Best Nation
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
-version: 4.0.0+1
+version: 1.0.0+5
 
 environment:
   sdk: '>=3.0.6 <4.0.0'
@@ -15,7 +15,8 @@ dependencies:
   dio:                          "^4.0.0" # Make Http request
   firebase_analytics:           "^10.4.4"
   firebase_core:                "^2.15.0"
-  flutter_inappwebview:         "^5.7.2+3" # Open webpage butons
+#  firebase_messaging:           "^14.7.4" # Send notifications
+  flutter_inappwebview:         "^5.7.2+3" # Open webpage buttons
   flutter_staggered_animations: "^1.1.1" # Display grid with animation
   flutter_pdfview:              "^1.2.7"
   font_awesome_flutter:         "^10.5.0"

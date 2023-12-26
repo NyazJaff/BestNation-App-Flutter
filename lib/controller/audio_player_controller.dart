@@ -1,5 +1,3 @@
-import 'package:bestnation/controller/lecture_controller.dart';
-import 'package:bestnation/utilities/layout_helper.dart';
 import 'package:just_audio/just_audio.dart';
 
 import 'package:get/get.dart';
@@ -30,7 +28,7 @@ class AudioPlayerController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    checkPermission();
+    // checkPermission();
   }
 
 

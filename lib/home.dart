@@ -12,8 +12,8 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
 
+class _MyHomePageState extends State<MyHomePage> {
   Widget createLogoDisplay(){
     return Container(
       width: 130,
