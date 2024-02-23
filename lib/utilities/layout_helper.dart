@@ -263,7 +263,7 @@ Widget jaffLogo(){
           ),
           onPressed: () async {
             await InAppBrowser.openWithSystemBrowser(
-                url: Uri.parse("https://nyazjaff.co.uk"));
+                url: WebUri("https://nyazjaff.co.uk"));
           },
           child: null,
         ),
