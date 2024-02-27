@@ -92,7 +92,9 @@ class _TextsState extends State<Texts> {
                 ),
                 iconSize: 30,
                 tooltip: 'stop'.tr,
-                onPressed: () {},
+                onPressed: () {
+                  textController.algoliaTextSearch(_searchTextController.text, force: true);
+                },
               )),
         ));
   }

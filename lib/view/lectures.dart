@@ -175,7 +175,9 @@ class _LecturesState extends State<Lectures> {
                 ),
                 iconSize: 30,
                 tooltip: 'stop'.tr,
-                onPressed: () {},
+                onPressed: () {
+                  lectureController.algoliaLectureSearch(_searchTextController.text, force: true);
+                },
               )),
         ));
   }

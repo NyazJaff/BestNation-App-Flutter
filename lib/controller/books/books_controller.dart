@@ -13,13 +13,18 @@ class BooksController extends GetxController {
   RxList records = [].obs;
   RxBool loading = true.obs;
   RxBool isThereNetwork = false.obs;
-
-  final _productsSearcher = HitsSearcher(applicationID: '9D19WMHJX8',
-      apiKey: '88f4b5a0f116ad981e784e1302b2206c',
-      indexName: 'books');
+  var _productsSearcher = null;
 
   @override
   void onReady() {
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    if (Get.arguments != null) {
+      pullDataFromNetwork();
+    }
   }
 
   listenToHitSearch(){
@@ -35,20 +40,22 @@ class BooksController extends GetxController {
     });
   }
 
-  @override
-  void onInit() {
-    super.onInit();
-    if (Get.arguments != null) {
-      pullDataFromNetwork();
+  productsSearcher(){
+    if(_productsSearcher != null) {
+      return _productsSearcher;
     }
+    _productsSearcher = HitsSearcher(applicationID: '9D19WMHJX8',
+        apiKey: '88f4b5a0f116ad981e784e1302b2206c',
+        indexName: 'books');
+    return _productsSearcher;
   }
 
-
-  algoliaBooksSearch(value) async {
-    if(value != "") {
+  algoliaBooksSearch(value,  {force = false}) async{
+    if(value.length > 3 || force) {
+      productsSearcher();
       listenToHitSearch();
       _productsSearcher.query(value);
-    }else {
+    }else if(value == "") {
       pullDataFromNetwork();
     }
   }

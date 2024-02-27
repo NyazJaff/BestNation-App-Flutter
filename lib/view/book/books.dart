@@ -74,7 +74,9 @@ class _BooksState extends State<Books> {
                 ),
                 iconSize: 30,
                 tooltip: 'stop'.tr,
-                onPressed: () {},
+                onPressed: () {
+                  booksController.algoliaBooksSearch(_searchBooksController.text, force: true);
+                },
               )),
         ));
   }

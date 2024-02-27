@@ -19,10 +19,7 @@ class LectureController extends GetxController {
   RxInt currentIndex = 0.obs;
 
   List<AudioSource> mp3List = [];
-
-  final _productsSearcher = HitsSearcher(applicationID: '9D19WMHJX8',
-      apiKey: '88f4b5a0f116ad981e784e1302b2206c',
-      indexName: 'lectures');
+  var _productsSearcher = null;
 
   @override
   void onInit() {
@@ -110,14 +107,16 @@ class LectureController extends GetxController {
   }
 
   // Algolia
-  algoliaLectureSearch(value) async{
-    if(value != "") {
+  algoliaLectureSearch(value,  {force = false}) async{
+    if(value.length > 3 || force) {
+      productsSearcher();
       listenToHitSearch();
       _productsSearcher.query(value);
-    }else {
+    }else if(value == "") {
       pullDataFromNetwork();
     }
   }
+
 
   listenToHitSearch(){
     _productsSearcher.responses.listen((snapshot) {
@@ -128,6 +127,15 @@ class LectureController extends GetxController {
         records.add(epic);
       }
     });
+  }
+  productsSearcher(){
+    if(_productsSearcher != null) {
+      return _productsSearcher;
+    }
+    _productsSearcher = HitsSearcher(applicationID: '9D19WMHJX8',
+        apiKey: '88f4b5a0f116ad981e784e1302b2206c',
+        indexName: 'lectures');
+    return _productsSearcher;
   }
 }
 

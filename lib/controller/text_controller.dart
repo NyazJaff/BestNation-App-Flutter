@@ -17,11 +17,7 @@ class TextController extends GetxController {
   RxList records = [].obs;
   RxBool loading = true.obs;
   RxBool isThereNetwork = false.obs;
-
-  final _productsSearcher = HitsSearcher(applicationID: '9D19WMHJX8',
-      apiKey: '88f4b5a0f116ad981e784e1302b2206c',
-      indexName: 'texts');
-
+  var _productsSearcher = null;
 
   @override
   void onReady() {
@@ -48,9 +44,9 @@ class TextController extends GetxController {
     }
   }
 
-
-  algoliaTextSearch(value) async {
-    if(value != "") {
+  algoliaTextSearch(value, {force = false}) async{
+    if(value.length > 3 || force) {
+      productsSearcher();
       listenToHitSearch();
       _productsSearcher.query(value);
     }else {
@@ -110,6 +106,16 @@ class TextController extends GetxController {
       records.add(epic);
     });
     return records;
+  }
+
+  productsSearcher(){
+    if(_productsSearcher != null) {
+      return _productsSearcher;
+    }
+    _productsSearcher = HitsSearcher(applicationID: '9D19WMHJX8',
+        apiKey: '88f4b5a0f116ad981e784e1302b2206c',
+        indexName: 'texts');
+    return _productsSearcher;
   }
 }
 

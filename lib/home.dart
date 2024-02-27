@@ -121,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             onPressed: () async {
               await InAppBrowser.openWithSystemBrowser(
-                  url: Uri.parse(url));
+                  url: WebUri(url));
             },
             child: null,
           ),
