@@ -8,6 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 // Pages
 import 'controller/audio_player_controller.dart';
@@ -23,17 +24,19 @@ void main() async{
     persistenceEnabled: true,
   );
 
-  // final notificationSettings = await FirebaseMessaging.instance.requestPermission(provisional: true);
+  OneSignal.initialize("b60982e3-ac1f-4b1b-bd37-75a19e184cfc");
 
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     Get.create(() => LectureController()); // This so Lectures can call itself
     Get.create(() => TextController()); // This so Text can call itself
     Get.create(() => BooksController()); // This so Text can call itself
+
 
     return GetMaterialApp(
       translations: AppTranslation(),
@@ -65,3 +68,4 @@ class MyApp extends StatelessWidget {
 
 
 }
+

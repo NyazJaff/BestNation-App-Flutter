@@ -878,8 +878,6 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - permission_handler_apple (9.3.0):
-    - Flutter
   - PromisesObjC (2.3.1)
   - share_plus (0.0.1):
     - Flutter
@@ -899,7 +897,6 @@ DEPENDENCIES:
   - just_audio (from `.symlinks/plugins/just_audio/ios`)
   - onesignal_flutter (from `.symlinks/plugins/onesignal_flutter/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
-  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/darwin`)
 
@@ -950,8 +947,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/onesignal_flutter/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
-  permission_handler_apple:
-    :path: ".symlinks/plugins/permission_handler_apple/ios"
   share_plus:
     :path: ".symlinks/plugins/share_plus/ios"
   sqflite:
@@ -989,7 +984,6 @@ SPEC CHECKSUMS:
   OneSignalXCFramework: 72a6dbc5d97b7eba09a51837f7858d8957ac2629
   OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
   path_provider_foundation: 3784922295ac71e43754bd15e0653ccfd36a147c
-  permission_handler_apple: 036b856153a2b1f61f21030ff725f3e6fece2b78
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   share_plus: c3fef564749587fc939ef86ffb283ceac0baf9f5
   sqflite: 673a0e54cc04b7d6dba8d24fb8095b31c3a99eec

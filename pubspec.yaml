@@ -26,7 +26,6 @@ dependencies:
   onesignal_flutter:            "^5.0.4"
   path_provider:                "^2.1.0" # Save files on disk
   percent_indicator:            "^4.2.3"
-  permission_handler:           ^11.3.0
   share_plus:                   "^7.1.0" # Share text with outside of app
   sqflite:                      "^2.3.0"
 

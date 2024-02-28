@@ -1,7 +1,6 @@
 import 'package:just_audio/just_audio.dart';
 
 import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class AudioPlayerController extends GetxController {
   AudioPlayer player = AudioPlayer();
@@ -99,13 +98,5 @@ class AudioPlayerController extends GetxController {
 
   hasPrevious() {
     return player.hasPrevious;
-  }
-
-  checkPermission() async {
-    var perm = await Permission.storage.request();
-    if (perm.isGranted) {
-    } else {
-      checkPermission();
-    }
   }
 }
